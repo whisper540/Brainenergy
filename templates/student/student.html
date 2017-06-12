@@ -1,0 +1,218 @@
+{% extends "basic/header.html" %}
+{% block css %}
+    <link href="/static/css/student/student.css" rel="stylesheet">
+{% endblock %}
+{% block body %}
+      <div class="row m-row">
+        <div class="col-sm-2 col-md-2 sidebar" id="teacleftsidebar">
+          <ul class="nav nav-sidebar m-lsts-navlt">
+            <li class="m-lst-navlt">
+              <a href="javascript:void(0)">
+                <img src="../..{{ request.user.avatar }}" alt="" class="u-headimg-left">
+{#                <p class="u-name-navlt u-user-name">{{ request.user.username }}</p>#}
+                <p class="u-name-navlt">{{ request.user.realname }}</p>
+              </a>
+            </li>
+          </ul>
+          <ul class="nav nav-sidebar m-navsidber-l">
+            <li class="active"><a href="/teacher/home/">学生档案</a></li>
+            <li><a href="/teacher/scalelist/?uid={{ uid }}">现场测评</a></li>
+            <li><a href="javascript:void(0)">训练内容</a></li>
+          </ul>
+          {#version start#}
+          <div class="m-version-wrap">
+              <p class="u-version-num">Version  1.0.0</p>
+              <p class="m-version-66nao">2016 <span class="u-icon-ver"></span>六六脑</p>
+          </div>
+          {#version end#}
+        </div>
+        <div class="col-sm-10 col-md-10 main m-main-basic">
+{#          <h1 class="page-header">张三同学，你好！</h1>#}
+          <div class="row placeholders m-wrap-basictop">
+            <div class="col-xs-8 col-sm-8 placeholder m-top-basic">
+              <div class="btn-group">
+                <span class="btn-group-btn">
+                  <a class="btn u-uname-basic">{{ userdetail.realname  | slice:"-2:" }}</a>
+                  <a href="javascript:void(0)" class="u-uinfo-top">
+{#                    <span class="u-user-name">{{ userdetail.username }}，</span>#}
+                    <span class="u-uname-1">{{ userdetail.realname }}，</span>
+                    {% if userdetail.sex == 1 %}
+                        女
+                    {% elif userdetail.sex == 2 %}
+                        男
+                    {% else %}
+                        其他
+                    {% endif %}，
+                    {{ userdetail.age }}岁
+                  </a>
+                </span>
+              </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 placeholder f-align-r">
+                   <a class="btn btn-primary u-btn-testBasic u-btn-blue" href="/teacher/scalelist/?uid={{ userid }}">现场测评</a>
+            </div>
+          </div>
+          <div class="row m-cont-navBasic">
+            <div class="col-xs-2 col-sm-2 placeholder m-wrap-navBasic">
+              <ul class="nav nav-sidebar m-lsts-navBasic">
+                <li class="m-lst-side active"><a href="/teacher/student/?uid={{ userdetail.id }}" class="u-a-navBasic">基本信息</a></li>
+                <li class="m-lst-side"><a href="/teacher/save/?uid={{ userdetail.id }}" class="u-a-navBasic">测评报告</a></li>
+                <li class="m-lst-side"><a href="/teacher/collect/?uid={{ userdetail.id }}" class="u-a-navBasic">信息采集</a></li>
+              </ul>
+            </div>
+            <div class="col-xs-10 col-sm-10 placeholder m-wraper-basicinfo">
+              <div class="m-wrap-basicinfo">
+                <div class="m-basicinfo-l">
+                  <dl class="m-group-basicinfo">
+                    <dt class="u-title-basicinfo">学生姓名</dt>
+{#                    <dd class="u-cont-basicinfo u-user-name">{{ userdetail.username }}</dd>#}
+                    <dd class="u-cont-basicinfo">{{ userdetail.realname }}</dd>
+                  </dl>
+                  <dl class="m-group-basicinfo">
+                    <dt class="u-title-basicinfo">年龄</dt>
+                    <dd class="u-cont-basicinfo">{{ userdetail.age }}</dd>
+                  </dl>
+                  <dl class="m-group-basicinfo">
+                    <dt class="u-title-basicinfo">性别</dt>
+                    <dd class="u-cont-basicinfo">
+                    {% if userdetail.sex == 1 %}
+                        女
+                    {% elif userdetail.sex == 2 %}
+                        男
+                    {% else %}
+                        其他
+                    {% endif %}
+                    </dd>
+                  </dl>
+                  <dl class="m-group-basicinfo">
+                    <dt class="u-title-basicinfo">年级</dt>
+                    <dd class="u-cont-basicinfo">
+                    {% if userdetail.grade == 1 %}
+                        未入园
+                    {% elif userdetail.grade == 2 %}
+                        小班
+                    {% elif userdetail.grade == 3 %}
+                        中班
+                    {% elif userdetail.grade == 4 %}
+                        大班
+                    {% elif userdetail.grade == 5 %}
+                        一年级
+                    {% elif userdetail.grade == 6 %}
+                        二年级
+                    {% elif userdetail.grade == 7 %}
+                        三年级
+                    {% elif userdetail.grade == 8 %}
+                        四年级
+                    {% elif userdetail.grade == 9 %}
+                        五年级
+                    {% elif userdetail.grade == 10 %}
+                        六年级
+                    {% elif userdetail.grade == 11 %}
+                        初中
+                    {% endif %}
+                    </dd>
+                  </dl>
+                </div>
+              </div>
+              <a class="u-modify-info" data-toggle="modal" data-target=".modal-teacher">信息有误，修改信息</a>
+{#              <div class="btn-group">#}
+{#                <span class="btn-group-btn">#}
+{#                  <button class="btn btn-default" type="button" data-toggle="modal" data-target=".modal-modify">信息有误，修改信息</button>#}
+{#                </span>#}
+{#              </div>#}
+            </div>
+            {# 修改档案弹框 start #}
+            <div class="modal fade modal-teacher">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button class="close" data-dismiss="modal">×</button>
+                    <h4>修改基本信息</h4>
+                  </div><!--modal-header,弹出层头部区域-->
+                  <form class="form-horizontal form-new-stu" id="newtab">
+                    <div class="modal-body">
+{#                      <p class="u-tip"></p>#}
+                      <div class="form-group">
+                        <label for="user-real-name" class="col-sm-2 control-label">学生姓名<span class="star-red">*</span></label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control u-in realname" id="user-real-name" name="realname" data-tip="请输入20以内个字符" value="{{ userdetail.realname }}">
+                          <p class="u-tip-form"></p>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="user-age" class="col-sm-2 control-label">年龄<span class="star-red">*</span></label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control u-in age" id="user-age" name="age"  data-tip="请输入1-100的数字" value="{{ userdetail.age }}">
+                          <p class="u-tip-form"></p>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label control-label">性别<span class="star-red">*</span></label>
+                        <div class="col-sm-10">
+                          <label for="user-gender-female" class="col-sm-3 control-label control-label-gender">
+                            <input type="radio" class="" id="user-gender-female" name="gender" value="2" {% if userdetail.sex == 2 %}checked{% endif %}>
+                            男</label>
+                          <label for="user-gender-male" class="col-sm-3 control-label control-label-gender">
+                            <input type="radio" class="" id="user-gender-male" name="gender" value="1" {% if userdetail.sex == 1 %}checked{% endif %}>
+                            女</label>
+                          <label for="user-gender-other" class="col-sm-3 control-label control-label-gender">
+                            <input type="radio" class="" id="user-gender-other" name="gender" value="9" {% if userdetail.sex == 9 %}checked{% endif %}>
+                            其他</label>
+                      </div>
+                    </div>
+                      <div class="form-group">
+                        <label for="user-edu" class="col-sm-2 control-label">年级<span class="star-red">*</span></label>
+                        <div class="col-sm-10">
+                          <select class="form-control" id="user-edu" name="education" >
+{#                          <option value="0">请选择</option>#}
+                            <option value="1" {% if userdetail.grade == 1 %}selected{% endif %}>未入园</option>
+                            <option value="2" {% if userdetail.grade == 2 %}selected{% endif %}>小班</option>
+                            <option value="3" {% if userdetail.grade == 3 %}selected{% endif %}>中班</option>
+                            <option value="4" {% if userdetail.grade == 4 %}selected{% endif %}>大班</option>
+                            <option value="5" {% if userdetail.grade == 5 %}selected{% endif %}>一年级</option>
+                            <option value="6" {% if userdetail.grade == 6 %}selected{% endif %}>二年级</option>
+                            <option value="7" {% if userdetail.grade == 7 %}selected{% endif %}>三年级</option>
+                            <option value="8" {% if userdetail.grade == 8 %}selected{% endif %}>四年级</option>
+                            <option value="9" {% if userdetail.grade == 9 %}selected{% endif %}>五年级</option>
+                            <option value="10" {% if userdetail.grade == 10 %}selected{% endif %}>六年级</option>
+                            <option value="11" {% if userdetail.grade == 11 %}selected{% endif %}>初中</option>
+                          </select>
+                          <p class="u-tip-form"></p>
+                        </div>
+                      </div>
+                    <div>
+                      <input type="hidden" value="{{ userdetail.mobile }}" name="telephone" id="user-tel"/>
+                      <input type="hidden" value="1" name="hand"/>
+{#                      <input type="hidden" value="2017-5-22" name="expire"/>#}
+                      <input type="hidden" value="" name="birthday"/>
+                      <input type="hidden" value="" name="access_token"/>
+                      <input type="hidden" value="" name="path"/>
+                      {# 当前被编辑用户的id#}
+                      <input type="hidden" value="{{ userdetail.id }}" name="id" id="user-id"/>
+                    </div>
+                  </div>
+                    <div class="modal-footer">
+                      <span class="btn btn-default u-btn-cancel" data-dismiss="modal">取消</span>
+                      <input type="submit" value="保存" class="btn btn-primary btn-save"/>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            {# 修改档案弹框 end #}
+          </div>
+        </div>
+
+        </div>
+{% endblock %}
+    {% block script %}
+    <script>
+        seajs.use([ '/static/js/app/student/student'], function(student){
+            student.init({
+                access_token: 'input[name=access_token]',
+                form: '.form-new-stu',
+                flag: 'basic'
+            });
+        });
+    </script>
+    {% endblock %}

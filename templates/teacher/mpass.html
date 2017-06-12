@@ -1,0 +1,84 @@
+{% extends "basic/header.html" %}
+{% block css %}
+<link href="/static/css/student/student.css" rel="stylesheet">
+{% endblock %}
+{% block body %}
+      <div class="row m-row">
+        <div class="col-sm-2 col-md-2 sidebar" id="teacleftsidebar">
+          <ul class="nav nav-sidebar m-lsts-navlt">
+            <li class="m-lst-navlt">
+              <a href="javascript:void(0)">
+                <img src="../..{{ request.user.avatar }}" alt="" class="u-headimg-left">
+                <p class="u-name-navlt u-user-name">{{ request.user.realname }}</p>
+              </a>
+            </li>
+          </ul>
+          <ul class="nav nav-sidebar m-navsidber-l">
+            <li class="active"><a href="/teacher/home/">学生档案</a></li>
+            <li><a href="/teacher/scalelist/?uid={{ uid }}">现场测评</a></li>
+            <li><a href="javascript:void(0)">训练内容</a></li>
+            <li><a href="javascript:void(0)">...</a></li>
+          </ul>
+          {#version start#}
+          <div class="m-version-wrap">
+              <p class="u-version-num">Version  1.0.0</p>
+              <p class="m-version-66nao">2016 <span class="u-icon-ver"></span>六六脑</p>
+          </div>
+          {#version end#}
+        </div>
+        <div class="col-sm-10 col-md-10 main m-main-nonav">
+          <div class="row">
+              <div class="col-xs-12 col-sm-12 placeholder">
+                <div class="m-wrap-basicinfo row">
+{#                  <div class="m-basicinfo-l">#}
+                     <form class="form-horizontal form-m-pass">
+                       <h4 class="modal-header">修改密码</h4>
+                       <div class="modal-body">
+                        <div class="form-group">
+                          <label for="user-opass" class="col-sm-4 control-label">原密码<span class="star-red">*</span></label>
+                          <div class="col-sm-8">
+                            <input type="password" class="form-control u-in old" id="user-opass" name="oldpassword"  data-tip="请填写密码">
+                            <p class="u-tip"></p>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="user-npass" class="col-sm-4 control-label">新密码<span class="star-red">*</span></label>
+                          <div class="col-sm-8">
+                            <input type="password" class="form-control u-in newp" id="user-npass" name="newpassword"  data-tip="请填写密码">
+                            <p class="u-tip"></p>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="user-cpass" class="col-sm-4 control-label">确认密码<span class="star-red">*</span></label>
+                          <div class="col-sm-8">
+                            <input type="password" class="form-control u-in confp" id="user-cpass" name="cpassword"  data-tip="请填写密码">
+                            <p class="u-tip"></p>
+                          </div>
+                        </div>
+                        <div>
+                          <input type="hidden" value="{{ request.user.username }}" name="username"/>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+{#                        <button class="btn btn-default btn-cancel">取消</button>#}
+                        <input type="submit" value="保存" class="btn btn-primary btn-modify" disabled/>
+                      </div>
+                    </form>
+{#                  </div>#}
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="m-wrap-mask fn-hide">
+        <div class="m-mask-tip"></div>
+        <p class="u-mask-tip">系统忙，请稍候重试</p>
+      </div>
+{% endblock %}
+{% block script %}
+    <script>
+        seajs.use(['/static/js/app/teacher/mpass',], function(mpass){
+            mpass.init();
+        })
+    </script>
+{% endblock %}

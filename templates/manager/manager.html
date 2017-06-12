@@ -1,0 +1,223 @@
+{% extends  'basic/header.html'%}
+    {% block body %}
+    <div class="row m-row">
+        <div class="col-sm-2 col-md-2 sidebar" id="teacleftsidebar">
+          <ul class="nav nav-sidebar m-lsts-navlt">
+            <li class="m-lst-navlt">
+                <a href="javascript:void(0)">
+                    <img src="../..{{ request.user.avatar }}" alt="" class="u-headimg-left">
+{#                    <p class="u-name-navlt u-user-name">{{ request.user.username }}</p>#}
+                    <p class="u-name-navlt">{{ request.user.realname }}</p>
+                </a>
+            </li>
+          </ul>
+          {#管理学生账号 start#}
+          <ul class="nav nav-sidebar nav-sidebar-teacher m-navsidber-l">
+            <li class="active"><a href="/manager/home/">老师档案</a></li>
+          </ul>
+          {#管理学生账号 end#}
+          {#version start#}
+          <div class="m-version-wrap">
+            <p class="u-version-num">Version  1.0.0</p>
+            <p class="m-version-66nao">2016 <span class="u-icon-ver"></span>六六脑</p>
+          </div>
+          {#version end#}
+        </div>
+        <div class="col-sm-10  col-md-10 main m-main-nonav m-main-tab">
+{#            <h1 class="page-header "><span class="u-user-name">{{ request.user.username }}</span>，您好！</h1>#}
+{#            <h1 class="page-header "><span>{{ request.user.username }}</span>，您好！</h1>#}
+            <div class="row f-text-right">
+            <div class="col-xs-8 col-sm-8 placeholder m-wrap-formsch">
+                <form class="form-search m-form-sch">
+                    <div class="row">
+                        <div class="col-xs-7 col-sm-7 m-wrap-searl"><input type="text" class="form-control" placeholder="请输入老师账号或姓名搜索..." id="keyword" name="search" value="{{ keyword }}"></div>
+                        <div class="col-xs-4 col-sm-4 m-wrap-searr">
+                            <input class="btn btn-primary m-search-user" type="submit" value="搜索">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-xs-4 col-sm-4 placeholder m-pad-40">
+                <button class="btn btn-primary u-btn-create u-btn-blue" type="button" data-toggle="modal" data-target=".modal-teacher">新建老师档案</button>
+            </div>
+          </div>
+          <!--<h2 class="sub-header">档案列表</h2>-->
+          <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead class="m-thead-table m-thead2-table">
+                    <tr>
+                      <th>用户名/帐号</th>
+                      <th>老师姓名</th>
+                      <th>性别</th>
+                      <th>年龄</th>
+                      <th>手机号</th>
+                      <th>老师信息</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody_list" class="m-body-table m-body-table2">
+                  {% if stulists %}
+                  {% for teacher in stulists %}
+                  <tr>
+                      <td class="u-user-name">{{ teacher.username }}</td>
+                      <td class="u-user-name">{{ teacher.username }}</td>
+                      <td>
+                          {% if teacher.sex == 1 %}
+                            女
+                          {% elif teacher.sex == 2 %}
+                            男
+                          {% else %}
+                            其他
+                          {% endif %}
+                      </td>
+                      <td>{{ teacher.age }}</td>
+                      <td>{{ teacher.mobile }}</td>
+                      <td><a href="/manager/collect/?uid={{ teacher.id }}">查看</a></td>
+                    </tr>
+                  {% endfor %}
+                      {% elif list_len == 0 and keyword != '' %}
+                      <tr><td colspan="5" class="u-hasno-info">未找到符合条件的老师信息！</td></tr>
+                      {% else %}
+                      <tr><td colspan="6" class="u-hasno-info">当前无老师信息，请新建老师档案！</td></tr>
+                  {% endif %}
+                  </tbody>
+                </table>
+                {% if stulists %}
+                   {% if list_len > 10 %}
+                        {% include "basic/paginator.html" %}
+                    {% endif %}
+                {% endif %}
+                <p class="u-hasno-search fn-hide">未找到符合条件的老师信息！</p>
+          </div>
+          {#分页 start#}
+{#          {% include "basic/paginator.html" %}#}
+          {#分页 end#}
+        </div>
+    </div>
+    {# 新建档案弹框 start #}
+    <div class="modal fade modal-teacher">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button class="close" data-dismiss="modal">×</button>
+              <h4>添加老师</h4>
+            </div><!--modal-header,弹出层头部区域-->
+            <form class="form-horizontal form-new-stu" id="newtab">
+              <div class="modal-body">
+                <p class="u-tip"></p>
+                <div class="form-group">
+                  <label for="user-name" class="col-sm-3 control-label">用户名/帐号<span class="star-red">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control u-in username" id="user-name" name="name" data-tip="请输入数字或英文字符，长度不超过20" >
+                    <p class="u-tip-form"></p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="user-real-name" class="col-sm-3 control-label">老师姓名<span class="star-red">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control u-in realname" id="user-real-name" name="realname" data-tip="请输入20以内个字符" >
+                    <p class="u-tip-form"></p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="user-age" class="col-sm-3 control-label">年龄<span class="star-red">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control u-in age" id="user-age" name="age"  data-tip="请输入1-100的数字">
+                    <p class="u-tip-form"></p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label control-label">性别<span class="star-red">*</span></label>
+                  <div class="col-sm-9">
+                    <label for="user-gender-female" class="col-sm-3 control-label control-label-gender">
+                      <input type="radio" class="" id="user-gender-female" name="gender" value="2" checked>
+                    男</label>
+                    <label for="user-gender-male" class="col-sm-3 control-label control-label-gender">
+                      <input type="radio" class="" id="user-gender-male" name="gender" value="1">
+                    女</label>
+                    <label for="user-gender-other" class="col-sm-3 control-label control-label-gender">
+                      <input type="radio" class="" id="user-gender-other" name="gender" value="9">
+                    其他</label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="user-edu" class="col-sm-3 control-label">教育程度<span class="star-red">*</span></label>
+                  <div class="col-sm-9">
+                    <select class="form-control" id="user-edu" name="education" >
+{#                        <option value="0">请选择</option>#}
+                        <option value="20">文盲</option>
+                        <option value="21">小学</option>
+                        <option value="22">初中</option>
+                        <option value="23">高中</option>
+                        <option value="24">专科</option>
+                        <option value="25">本科及以上</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="user-tel" class="col-sm-3 control-label">手机号<span class="star-red">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control u-in tel" id="user-tel" name="telephone"  data-tip="请输入正确的手机号">
+                    <p class="u-tip-form"></p>
+                  </div>
+                </div>
+                <div>
+                    <input type="hidden" value="1" name="hand"/>
+                    <input type="hidden" value="2017-5-22" name="expire"/>
+                    <input type="hidden" value="" name="birthday"/>
+                    <input type="hidden" value="" name="access_token"/>
+                    <input type="hidden" value="{{ request.user.id }}" name="adduid"/>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-default u-btn-cancel" data-dismiss="modal">取消</button>
+                {#onclick="subNewtab()"#}
+                <input type="submit" value="保存" class="btn btn-primary btn-save"></input>
+              </div>
+            </form>
+
+          </div>
+        </div>
+    </div>
+    {# 新建档案弹框 end #}
+    {% endblock %}
+    {% block script %}
+    <script>
+        seajs.use(['/static/js/app/manager/search', '/static/js/app/manager/manager'], function(search, teacher){
+            search.init();
+            teacher.init({
+                access_token: 'input[name=access_token]',
+                form: '.form-new-stu',
+                search: '.form-search',
+                flag: 'basic'
+            });
+        })
+{#        function startEva(uid) {#}
+{#            location.href="/teacher/scalelist/?uid="+uid;#}
+{#        }#}
+{#        function subNewtab() {#}
+{#            forms = $("#newtab").serializeArray();#}
+{#            console.log(forms);#}
+{#            $.ajax({#}
+{#                type:'POST',#}
+{#                url:'/teacher/newtab/',#}
+{#                dataType:'json',#}
+{#                data:{#}
+{#                  //'forms': forms,#}
+{#                    username:$("#user-name").val(),#}
+{#                    age:$("#user-age").val(),#}
+{#                    grade:$("#user-edu").val(),#}
+{#                    sex:$("input[name='gender']:checked").val(),#}
+{#                    utype:'3',#}
+{#                    adduid:{{ request.user.id }}#}
+{#                },#}
+{#                success:function (response) {#}
+{#                    console.log(response);#}
+{#                    if(response == '200'){#}
+{#                        location.href="/teacher/home";#}
+{#                    }#}
+{#                }#}
+{#            });#}
+{#            return false;#}
+{#        }#}
+    </script>
+    {% endblock %}

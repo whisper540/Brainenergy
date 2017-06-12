@@ -1,0 +1,362 @@
+{% extends "basic/header.html" %}
+{% block body %}
+      <div class="row m-row">
+        <div class="col-sm-2 col-md-2 sidebar" id="teacleftsidebar">
+            <ul class="nav nav-sidebar m-lsts-navlt">
+                <li class="m-lst-navlt">
+                    <a href="javascript:void(0)">
+                        <img src="/static/images/logo.ico" alt="" class="u-headimg-left">
+                        <p class="u-name-navlt">{{ request.user.realname }}老师</p>
+                    </a>
+                </li>
+            </ul>
+          <ul class="nav nav-sidebar m-navsidber-l">
+            <li><a href="/teacher/home/">学生档案</a></li>
+            <li class="active"><a href="/teacher/scalelist/?uid={{ userid }}">现场测评</a></li>
+            <li><a href="javascript:void(0)">训练内容</a></li>
+            <li><a href="javascript:void(0)">...</a></li>
+          </ul>
+          {#version start#}
+          <div class="m-version-wrap">
+            <p class="u-version-num">Version  1.0.0</p>
+            <p class="m-version-66nao">2016 <span class="u-icon-ver"></span>六六脑</p>
+          </div>
+          {#version end#}
+        </div>
+
+        <div class="col-sm-10 col-md-10 main m-main-nonav">
+          <h1 class="page-header">张三同学，你好！</h1>
+
+{#          <div class="row placeholders">#}
+{#                #}
+{#          </div>#}
+
+          <div class="row">
+            <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">测评结果</div>
+            <div class="panel-body">
+            <p>总分：{{ comscore|floatformat:"2" }}分</p>
+            </div>
+            <!-- Table -->
+            <table class="table">
+            <thead>
+             <tr>
+            <th>#</th>
+            <th>项目</th>
+            <th>总分</th>
+            <th>得分</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for question in datas %}
+                <tr>
+                <th scope="row">{{ question.qid }}</th>
+                <td>
+                    {% if question.ability == '1' %}
+                        注意力
+                    {% endif %}
+                    {% if question.ability == '2' %}
+                        记忆力
+                    {% endif %}
+                    {% if question.ability == '3' %}
+                        创造力
+                    {% endif %}
+                    {% if question.ability == '4' %}
+                        执行功能
+                    {% endif %}
+                    {% if question.ability == '5' %}
+                        语言功能
+                    {% endif %}
+                    {% if question.ability == '6' %}
+                        情绪情感
+                    {% endif %}
+                    {% if question.ability == '7' %}
+                       社会认知
+                    {% endif %}
+                    {% if question.ability == '8' %}
+                        逻辑推理
+                    {% endif %}
+                    {% if question.ability == '9' %}
+                        信息加工速度
+                    {% endif %}
+                </td>
+                <td>100分</td>
+                <td>{{ question.scoreT|floatformat:"2" }}分</td>
+                </tr>
+            {% endfor %}
+
+
+            </tbody>
+            </table>
+            </div>
+
+{#          得分说明#}
+        <div class="panel panel-success">
+        <div class="panel-heading">
+        <h3 class="panel-title" id="panel-title">得分说明<a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h3>
+        </div>
+        <div class="panel-body">
+            <p>
+                脑适能评估的综合分数和各项分数以百分等级表示，即在参照人群中低于某分数的人数百分比。分数越高，表示测试者脑适能水平越高于同龄的儿童。
+            </p>
+        <!-- Table -->
+        <table class="table">
+        <thead>
+         <tr>
+        <th>#</th>
+        <th>出色</th>
+        <th>良好</th>
+        <th>中等</th>
+        <th>中下</th>
+        <th>欠佳</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <th scope="row">综合</th>
+        <td>大于90</td>
+        <td>70~89</td>
+        <td>25~74</td>
+        <td>5~24</td>
+        <td>小于5</td>
+        </tr>
+        <tr>
+        <th scope="row">单项</th>
+        <td>大于90</td>
+        <td>70~89</td>
+        <td>25~74</td>
+        <td>5~24</td>
+        <td>小于5</td>
+        </tr>
+        <tr>
+        <th scope="row">超过同龄人</th>
+        <td>90%</td>
+        <td>70</td>
+        <td>25%</td>
+        <td>5%</td>
+        <td>0%</td>
+        </tr>
+        </tbody>
+        </table>
+            <p>
+                脑适能是非常复杂的，本评估考察的只是各大能力中的某些代表性能力。仅仅一套评估，不能成为解释或归纳孩子能力的唯一标准，但分数说明一定的问题，这是深入客观了解孩子的一扇门。
+            </p>
+        </div>
+        </div>
+{#          End得分说明#}
+
+          {#          评估结果#}
+        <div class="panel panel-success">
+        <div class="panel-heading">
+        <h3 class="panel-title" id="panel-title">评估结果<a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h3>
+        </div>
+        <div class="panel-body">
+            <p style="margin-bottom:60px;">
+                经评估，您孩子的脑适能综合得分为{{ comscore }}分，超过了{{ comscore }}%的同龄人，属于脑适能水平良好。
+            </p>
+            {% for i in peoples %}
+                {% if i == pos %}
+                <span class="icuser glyphicon glyphicon-user popover-show" title="" data-container="body" data-toggle="popover"
+                      data-placement="top" data-content="<span style='color:red'>您的位置</span>"></span>
+                {% endif %}
+                {% if i == 1 %}
+                <span class="icuser glyphicon glyphicon-user popover-show" title="" data-container="body" data-toggle="popover"
+                      data-placement="bottom" data-content="<span style='color:#a94442'>发育迟缓</span>" style="color:#a94442;"></span>
+                {% endif %}
+                {% if i > 1 and i <= 5 %}
+                    {% if i == 5 %}
+                        <span class="icuser glyphicon glyphicon-user popover-show" title="" data-container="body" data-toggle="popover"
+                      data-placement="bottom" data-content="<span style='color:deeppink'>中等偏下</span>" style="color:deeppink;"></span>
+                    {% else %}
+                        <span class="icuser glyphicon glyphicon-user" style="color:deeppink;"></span>
+                    {% endif %}
+                {% endif %}
+                {% if i > 5 and i <= 15 %}
+                    {% if i == 15 %}
+                        <span class="icuser glyphicon glyphicon-user popover-show" title="" data-container="body" data-toggle="popover"
+                      data-placement="bottom" data-content="<span style='color:dodgerblue'>中等</span>" style="color:dodgerblue;"></span>
+                    {% else %}
+                        <span class="icuser glyphicon glyphicon-user" style="color:dodgerblue;"></span>
+                    {% endif %}
+                {% endif %}
+                {% if i > 15 and i <= 19 %}
+                    {% if i == 19 %}
+                        <span class="icuser glyphicon glyphicon-user popover-show" title="" data-container="body" data-toggle="popover"
+                      data-placement="bottom" data-content="<span style='color:#2aabd2'>良好</span>" style="color:#2aabd2;"></span>
+                    {% else %}
+                        <span class="icuser glyphicon glyphicon-user" style="color:#2aabd2;"></span>
+                    {% endif %}
+
+                {% endif %}
+                {% if i == 20 %}
+                    <span class="icuser glyphicon glyphicon-user popover-show" title="" data-container="body" data-toggle="popover"
+                      data-placement="top" data-content="<span style='color:#4cae4c'>优秀</span>" style="color:#4cae4c;"></span>
+                {% endif %}
+            {% endfor %}
+        <p style="margin-top:60px"></p>
+{#        曲线开始#}
+        <div id="container" style="min-width:800px;height:400px"></div>
+{#        End曲线结束#}
+
+        </div>
+        </div>
+{#          End评估结果#}
+
+                    {#          重点脑适能单项分析#}
+        <div class="panel panel-success">
+        <div class="panel-heading">
+        <h3 class="panel-title" id="panel-title">重点脑适能单项分析<a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h3>
+        </div>
+        <div class="panel-body">
+            <p>
+                您孩子较强的几项脑能力是： 加工速度、言语功能
+            </p>
+            <p>
+                您孩子需要加强的几项脑能力是： 注意力、记忆力、逻辑推理、创造力
+            </p>
+            <p>
+                您孩子的注意力评估分数为：43分，处于中等水平，这一分数超过同龄人的25%。
+            </p>
+
+            <table class="table">
+            <thead>
+             <tr>
+            <th>#</th>
+            <th>出色</th>
+            <th>良好</th>
+            <th>中等</th>
+            <th>中下</th>
+            <th>欠佳</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <th scope="row">注意力</th>
+            <td>大于90</td>
+            <td>70~89</td>
+            <td>25~74</td>
+            <td>5~24</td>
+            <td>小于5</td>
+            </tr>
+            <tr>
+            <th scope="row">超过同龄人</th>
+            <td>90%</td>
+            <td>70</td>
+            <td>25%</td>
+            <td>5%</td>
+            <td>0%</td>
+            </tr>
+            </tbody>
+            </table>
+
+            <p>
+                注意力是心理活动指向和集中于某事物的能力。先注意到某事物，才可能进一步去反应、记忆或思考，所以注意力是记忆力、阅读能力、学习能力的基础。通过注意分配、任务切换、专注力等认知训练，可以提高注意力。
+            </p>
+
+        </div>
+        </div>
+{#          End重点脑适能单项分析#}
+
+           {#          建议#}
+        <div class="panel panel-success">
+        <div class="panel-heading">
+        <h3 class="panel-title" id="panel-title">建议<a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h3>
+        </div>
+        <div class="panel-body">
+            <p>
+                近十年，大量关于脑可塑性的研究报告发现，人类的大脑，特别是儿童、青少年的大脑，具有极强的可塑性。通过一定的体育活动、音乐训练，均可以提高大脑功能。同时，长期的专业脑适能训练课程，既能够科学地提高存在不足的单项能力，又能够系统地提高整体脑适能。
+            </p>
+            <p>
+                建议您的孩子在日常生活和接下来的课程学习中，针对分数较低的单项能力进行着重训练，来提高该能力；同时通过训练分数较高的单项能力，来保持优势，达到大脑综合能力的提高。
+            </p>
+
+        </div>
+        </div>
+{#          End建议#}
+          </div>
+        </div>
+
+        </div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="https://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+    <script>
+        seajs.use(['/static/js/app/exam/deal'], function(deal){
+            deal.init();
+        })
+        $(function () { $('.popover-show').popover({html:true}).popover('show');});
+        $(function () {
+{#            var qhistory = localStorage.getItem('qhistory');#}
+{#            console.log(qhistory);#}
+        });
+        $(function () {
+            $('#container').highcharts({
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: '按项目分类-柱形图'
+                },
+                xAxis: {
+                    categories: [
+                        {% for question in datas %}
+                            {% if question.ability == '1' %}
+                                "注意力",
+                            {% endif %}
+                            {% if question.ability == '2' %}
+                                "记忆力",
+                            {% endif %}
+                            {% if question.ability == '3' %}
+                                "创造力",
+                            {% endif %}
+                            {% if question.ability == '4' %}
+                                "执行功能",
+                            {% endif %}
+                            {% if question.ability == '5' %}
+                                "语言功能",
+                            {% endif %}
+                            {% if question.ability == '6' %}
+                                "情绪情感",
+                            {% endif %}
+                            {% if question.ability == '7' %}
+                               "社会认知",
+                            {% endif %}
+                            {% if question.ability == '8' %}
+                                "逻辑推理",
+                            {% endif %}
+                            {% if question.ability == '9' %}
+                                "信息加工速度",
+                            {% endif %}
+                        {% endfor %}
+                        ]
+                     },
+                yAxis: {
+                    min: 0,
+                    alternateGridColor: '#eee',
+                    title: {
+                        text: '分项结果'
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    name: '分项结果',
+                    data: [
+{#                        {% for question in datas %}#}
+{#                            {{ question.scoreT|floatformat:"2" }},#}
+{#                        {% endfor %}#}
+                        10,20,30,40,50,60,70
+                    ]
+                }]
+            });
+        });
+    </script>
+{% endblock %}

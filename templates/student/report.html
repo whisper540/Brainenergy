@@ -1,0 +1,654 @@
+{% extends "basic/header.html" %}
+    {% block css %}
+    <link href="/static/css/teacher/report.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/css/swiper/swiper.css">
+    <link href="/static/css/print.css" rel="stylesheet" media="print" type="text/css">
+        <style>
+        .top-line{
+            border-top:1px solid #ddd;
+        }
+        .bottom-line{
+            border-bottom:1px solid #ddd;
+        }
+        </style>
+    {% endblock %}
+    {% block body %}
+      <div class="row m-row">
+        <div class="col-sm-2 col-md-2 sidebar" id="teacleftsidebar">
+          <ul class="nav nav-sidebar m-lsts-navlt">
+            <li class="m-lst-navlt">
+              <a href="javascript:void(0)">
+                <img src="../..{{ request.user.avatar }}" alt="" class="u-headimg-left">
+{#                <p class="u-name-navlt u-user-name">{{ request.user.username }}</p>#}
+                <p class="u-name-navlt">{{ request.user.realname }}</p>
+              </a>
+          </li>
+        </ul>
+        <ul class="nav nav-sidebar m-navsidber-l">
+          <li class="active"><a href="/teacher/home/">学生档案</a></li>
+          <li><a href="/teacher/scalelist/?uid={{ userid }}">现场测评</a></li>
+          <li><a href="javascript:void(0)">训练内容</a></li>
+          <li><a href="javascript:void(0)">...</a></li>
+        </ul>
+        {#version start#}
+        <div class="m-version-wrap">
+          <p class="u-version-num">Version  1.0.0</p>
+          <p class="m-version-66nao">2016 <span class="u-icon-ver"></span>六六脑</p>
+        </div>
+        {#version end#}
+        </div>
+        <div class="col-sm-10 col-md-10 main m-main-basic">
+{#          <h1 class="page-header">张三同学，你好！</h1>#}
+          <div class="row placeholders m-wrap-basictop">
+            <div class="col-xs-8 col-sm-8 placeholder m-top-basic">
+              <div class="btn-group">
+                <span class="btn-group-btn">
+                  <a class="btn u-uname-basic" type="button">{{ userdetail.realname  | slice:"-2:" }}</a>
+                  <a href="javascript:void(0)" class="u-uinfo-top">
+{#                    <span class="u-user-name">{{ userdetail.username }}</span>，#}
+                    <span>{{ userdetail.realname }}</span>，
+                    {% if userdetail.sex == 1 %}
+                        女
+                    {% elif userdetail.sex == 2 %}
+                        男
+                    {% else %}
+                        其他
+                    {% endif %}，
+                    {{ userdetail.age }}岁
+                  </a>
+                </span>
+              </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 placeholder f-align-r">
+              <div class="btn-group">
+                <span class="btn-group-btn">
+                  <a class="btn btn-primary u-btn-testBasic u-btn-blue" href="/teacher/scalelist/?uid={{ userid }}">现场测评</a>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="row m-cont-navBasic">
+            <div class="col-xs-2 col-sm-2 placeholder m-wrap-navBasic" id="print_head">
+              <ul class="nav nav-sidebar m-lsts-navBasic">
+                <li class="m-lst-side"><a href="/teacher/student/?uid={{ userid }}" class="u-a-navBasic">基本信息</a></li>
+                <li class="m-lst-side active"><a href="/teacher/save/?uid={{ userid }}" class="u-a-navBasic">测评报告</a></li>
+                <li class="m-lst-side"><a href="/teacher/collect/?uid={{ userid }}" class="u-a-navBasic">信息采集</a></li>
+              </ul>
+            </div>
+          {% if ishasreport == False %}
+            <div class="col-xs-10 col-sm-10 placeholder m-wraper-basicinfo">
+            未完成测评，暂无测评报告
+            <p class="m-btn-testBasic">
+                <a class="btn btn-primary u-btn-testBasic u-btn-blue" href="/teacher/scalelist/?uid={{ userid }}">立即测评</a>
+            </p>
+            </div>
+          {% else %}
+
+            <div class="col-xs-10 col-sm-10 placeholder m-wraper-basicinfo" id="print_body">
+              {# 测评报告列表#}
+              {#滑动区域 start#}
+              <div class="row">
+                <div class="pc-slide">
+					<div class="preview">
+						<a class="arrow-left fn-hide u-arrow" href="#"></a>
+						<a class="arrow-right fn-hide u-arrow" href="#"></a>
+						<div class="swiper-container">
+							<div class="swiper-wrapper">
+                                {% for report in reports %}
+                                    {% if forloop.first %}
+                                        <div class="swiper-slide active-nav swiper-slide-visible" onclick="reportDetail({{ userid }},{{ report.id }})">
+                                            <p>
+                                                {% if report.stype == 1 %}
+                                                    3-6岁儿童脑适能评估量表
+                                                {% elif report.stype == 2 %}
+                                                    7-9岁儿童脑适能评估量表
+                                                {% elif report.stype == 3 %}
+                                                    10-12岁儿童脑适能评估量表
+                                                {% endif %}
+                                            </p>
+{#                                            <p>{{ forloop.counter }}测评编号：{{ report.id }}</p>#}
+                                            <p>{{ report.endtime | date:"Y-m-d"  }}</p>
+                                        </div>
+                                    {% else %}
+                                        <div class="swiper-slide swiper-slide-visible" onclick="reportDetail({{ userid }},{{ report.id }})">
+                                        <p>
+                                                {% if report.stype == 1 %}
+                                                    3-6岁儿童脑适能评估量表
+                                                {% elif report.stype == 2 %}
+                                                    7-9岁儿童脑适能评估量表
+                                                {% elif report.stype == 3 %}
+                                                    10-12岁儿童脑适能评估量表
+                                                {% endif %}
+                                            </p>
+{#                                            <p>{{ forloop.counter }}测评编号:{{ report.id }}</p>#}
+                                            <p>{{ report.endtime | date:"Y-m-d" }}</p>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+                <div class="m-slide-img">
+{#                  <div class="m-slide-fixed">#}
+{#                        <div class="m-wrap-lsts2">#}
+{#                            <ul class="m-slide-lsts2 clearfix">#}
+{#                                {% for report in reports %}#}
+{#                                    {% if forloop.first %}#}
+{#                                        <li class="m-slide-lst2 cur fn-left" onclick="reportDetail({{ userid }},{{ report.id }})">#}
+{#                                            <p>{{ forloop.counter }}测评编号：{{ report.id }}</p>#}
+{#                                            <p>{{ report.endtime }}</p>#}
+{#                                        </li>#}
+{#                                    {% else %}#}
+{#                                        <li class="m-slide-lst2 fn-left" onclick="reportDetail({{ userid }},{{ report.id }})">#}
+{#                                        <p>{{ forloop.counter }}测评编号:{{ report.id }}</p>#}
+{#                                        <p>日期:{{ report.endtime }}</p>#}
+{#                                        </li>#}
+{#                                    {% endif %}#}
+{#                                {% endfor %}#}
+{#                            </ul>#}
+{#                        </div>#}
+{#                        <a href="javascript:void(0)" class="u-slide-move u-move-slidel fn-hide"></a>#}
+{#                        <a href="javascript:void(0)" class="u-slide-move u-move-slider fn-hide"></a>#}
+{#                    </div>#}
+                  <div class="m-wrap-img" id="report">
+                    {#测评报告开始#}
+                        <h3 class="page-header">{{ sdatas.explain }}</h3>
+                    <div class="row m-report-result">
+                    {# 基础信息 #}
+                      <div class="panel panel-info">
+                          <div class="panel-heading">
+                            <h3 class="panel-title" id="panel-title">基础信息<a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h3>
+                          </div>
+                          <div class="panel-body">
+                            <!-- Table -->
+                            <table class="table">
+{#                              <thead>#}
+{#                                <tr>#}
+{#                                  <th>编号</th>#}
+{#                                  <th class="s-excellent">出色</th>#}
+{#                                  <th class="s-well">良好</th>#}
+{#                                  <th class="s-good">中等</th>#}
+{#                                  <th class="s-weak">中下</th>#}
+{#                                  <th class="s-low">欠佳</th>#}
+{#                                </tr>#}
+{#                              </thead>#}
+                              <tbody>
+                                <tr>
+                                  <th>编号</th>
+                                  <td>{{ userdetail.id }}</td>
+                                  <th>姓名</th>
+                                  <td>{{ userdetail.realname }}</td>
+                                </tr>
+                                <tr>
+                                  <th>年龄</th>
+                                  <td>{{ userdetail.age }}岁</td>
+                                  <th>年级</th>
+                                  <td>
+                                  {% if userdetail.grade == 1 %}
+                                        未入园
+                                    {% elif userdetail.grade == 2 %}
+                                        中班
+                                    {% elif userdetail.grade == 3 %}
+                                        小班
+                                    {% elif userdetail.grade == 4 %}
+                                        大班
+                                    {% elif userdetail.grade == 5 %}
+                                        一年级
+                                    {% elif userdetail.grade == 6 %}
+                                        二年级
+                                    {% elif userdetail.grade == 7 %}
+                                        三年级
+                                    {% elif userdetail.grade == 8 %}
+                                        四年级
+                                    {% elif userdetail.grade == 9 %}
+                                        五年级
+                                    {% elif userdetail.grade == 10 %}
+                                        六年级
+                                    {% elif userdetail.grade == 11 %}
+                                        初中
+                                    {% endif %}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th>性别</th>
+                                  <td>
+                                      {% if userdetail.sex == 1 %}
+                                            女
+                                        {% elif userdetail.sex == 2 %}
+                                            男
+                                        {% else %}
+                                            其他
+                                        {% endif %}
+                                  </td>
+                                  <th>监护人</th>
+                                  <td>{{ userdetail.guardian }}</td>
+                                </tr>
+                              <tr>
+                                  <th>联系方式</th>
+                                  <td>{{ userdetail.mobile }}</td>
+                                  <th>测试日期</th>
+                                  <td>{{ endtime | date:"Y-m-d"  }}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+
+                          </div>
+                        </div>
+                  {# 基础信息End #}
+                      <div class="panel panel-info">
+                          <div class="panel-heading">测评结果</div>
+                          <div class="panel-body">
+                              <p>总分：{{ comscore|floatformat:"2" }}分</p>
+                            </div>
+                          <!-- Table -->
+                          <table class="table">
+                            <thead>
+                             <tr>
+{#                                <th>#</th>#}
+                                <th>项目</th>
+                                <th>总分</th>
+                                <th>得分</th>
+                             </tr>
+                            </thead>
+                            <tbody>
+                              {% for question in datas %}
+                              <tr>
+{#                                <th scope="row">{{ question.qid }}</th>#}
+                                <td>
+                                {% if question.ability == '1' %}
+                                    注意力
+                                {% endif %}
+                                {% if question.ability == '2' %}
+                                    记忆力
+                                {% endif %}
+                                {% if question.ability == '3' %}
+                                    执行功能
+                                {% endif %}
+                                {% if question.ability == '4' %}
+                                    言语功能
+                                {% endif %}
+                                {% if question.ability == '5' %}
+                                    创造力
+                                {% endif %}
+                                {% if question.ability == '6' %}
+                                    情绪情感
+                                {% endif %}
+                                {% if question.ability == '7' %}
+                                   社会认知
+                                {% endif %}
+                                {% if question.ability == '8' %}
+                                    信息加工速度
+                                {% endif %}
+                                {% if question.ability == '9' %}
+                                    逻辑推理
+                                {% endif %}
+                                </td>
+                                <td>100分</td>
+                                <td>{{ question.scoreT|floatformat:"2" }}分</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        </table>
+                        </div>
+                      {# 得分说明#}
+                      <div class="panel panel-info">
+                          <div class="panel-heading">
+                            <h3 class="panel-title" id="panel-title">得分说明<a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h3>
+                          </div>
+                          <div class="panel-body">
+                            <p>脑适能评估的综合分数和各项分数以百分等级表示，即在参照人群中低于某分数的人数百分比。分数越高，表示测试者脑适能水平越高于同龄的儿童。</p>
+                            <!-- Table -->
+                            <table class="table">
+                              <thead>
+                                <tr class="top-line">
+                                  <th>&nbsp;</th>
+                                  <th class="s-excellent">出色</th>
+                                  <th class="s-well">良好</th>
+                                  <th class="s-good">中等</th>
+                                  <th class="s-weak">中下</th>
+                                  <th class="s-low">欠佳</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <th scope="row">综合</th>
+                                  <td>大于90</td>
+                                  <td>70~89</td>
+                                  <td>25~69</td>
+                                  <td>5~24</td>
+                                  <td>小于5</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">单项</th>
+                                  <td>大于90</td>
+                                  <td>70~89</td>
+                                  <td>25~69</td>
+                                  <td>5~24</td>
+                                  <td>小于5</td>
+                                </tr>
+                                <tr class="bottom-line">
+                                  <th scope="row">超过同龄人</th>
+                                  <td>90%</td>
+                                  <td>70%</td>
+                                  <td>25%</td>
+                                  <td>5%</td>
+                                  <td>0%</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <p>脑适能是非常复杂的，本评估考察的只是各大能力中的某些代表性能力。仅仅一套评估，不能成为解释或归纳孩子能力的唯一标准，但分数说明一定的问题，这是深入客观了解孩子的一扇门。</p>
+                          </div>
+                        </div>
+                      {#End得分说明#}
+                      {#评估结果#}
+                      <div class="panel panel-info">
+                          <div class="panel-heading">
+                            <h3 class="panel-title" id="panel-title">评估结果<a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h3>
+                          </div>
+                          <div class="panel-body m-evalution fn-hide">
+                              <p style="margin-bottom:50px;">经评估，您孩子的脑适能综合得分为<span class="f-text-red">{{ comscore|floatformat:"2" }}</span>分，超过了<span class="f-text-red">
+                              {% if comscore >= 90 %}
+                                  90%
+                              {% elif comscore >= 70 and comscore <= 89 %}
+                                  70%
+                              {% elif comscore >= 25 and comscore <= 69 %}
+                                  25%
+                              {% elif comscore >= 5 and comscore <= 24 %}
+                                  5%
+                              {% elif comscore < 5 %}
+                                  0%
+                              {% endif %}
+                              </span>的同龄人，属于脑适能水平<span class="u-text-evalution f-text-red"></span>。</p>
+                              <div class="m-gly-users clearfix" id="m-print-position">
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user1" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-top">欠佳</div>
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user2" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user2" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user2" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user2" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-2 u-tip-user-top">中下</div>
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user3" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user3" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user3" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user3" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user3" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user3" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user3" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user3" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user3" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-3 u-tip-user-top">中等</div>
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user4" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user4" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user4" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user4" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-4 u-tip-user-top">良好</div>
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user5" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                                <div class="glyphicon glyphicon-user u-gly-user u-color-user5" aria-hidden="true">
+                                    <div class="u-tip-u u-tipu-5 u-tip-user-top">优秀</div>
+                                    <div class="u-tip-u u-tipu-1 u-tip-user-bot fn-hide" style="top: -33px;width: 5.6rem;margin-left: -2.8rem">您的位置</div>
+                                </div>
+                              </div>
+{#                              <div class=" m-gly-users" id="print-position">#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user1" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user2" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user2" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user2" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user2" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user3" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user3" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user3" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user3" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user3" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user3" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user3" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user3" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user3" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user4" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user4" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user4" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user4" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user5" aria-hidden="true"></span>#}
+{#                                <span class="glyphicon glyphicon-user u-gly-user u-color-user5" aria-hidden="true"></span>#}
+{#                                <span class="u-tip-user u-tip-user1 u-tip-user-bot">欠佳</span>#}
+{#                                <span class="u-tip-user u-tip-user2 u-tip-user-bot">中下</span>#}
+{#                                <span class="u-tip-user u-tip-user3 u-tip-user-bot">中等</span>#}
+{#                                <span class="u-tip-user u-tip-user4 u-tip-user-bot">良好</span>#}
+{#                                <span class="u-tip-user u-tip-user5 u-tip-user-top">优秀</span>#}
+{#                              </div>#}
+                             <p style="margin-top:60px"></p>
+                            {# 曲线开始#}
+{#                            <div id="container" style="min-width:800px;height:400px"></div>#}
+                            {#End曲线结束#}
+                            {# 柱状图开始#}
+                             <div class="m-echarts-1"></div>
+                            {#柱状图结束#}
+                          </div>
+                        </div>
+                      {#End评估结果#}
+                      {# 重点脑适能单项分析#}
+                      <div class="panel panel-info">
+                          <div class="panel-heading">
+                            <h3 class="panel-title" id="panel-title">重点脑适能单项分析<a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h3>
+                          </div>
+                          <div class="panel-body m-single-analysis fn-hide">
+                            <p class="m-strong-brain fn-hide">您孩子较强的几项脑能力是：<span class="f-text-red strong">加工速度、言语功能</span></p>
+                            <div class="m-wrap-weak fn-hide">
+                                <p class="m-weak-brain">您孩子需要加强的几项脑能力是：<span class="f-text-red weak"> 注意力、记忆力、逻辑推理、创造力</span></p>
+                                {#此处append代码#}
+                            </div>
+                        </div>
+                      </div>
+                      {# End重点脑适能单项分析#}
+                      {# 建议#}
+                      <div class="panel panel-info">
+                        <div class="panel-heading">
+                          <h3 class="panel-title" id="panel-title">建议<a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h3>
+                        </div>
+                        <div class="panel-body">
+                          <p>近十年，大量关于脑可塑性的研究报告发现，人类的大脑，特别是儿童、青少年的大脑，具有极强的可塑性。通过一定的体育活动、音乐训练，均可以提高大脑功能。同时，长期的专业脑适能训练课程，既能够科学地提高存在不足的单项能力，又能够系统地提高整体脑适能。</p>
+                          <p>建议您的孩子在日常生活和接下来的课程学习中，针对分数较低的单项能力进行着重训练，来提高该能力；同时通过训练分数较高的单项能力，来保持优势，达到大脑综合能力的提高。</p>
+                        </div>
+                      </div>
+                    <button class="btn btn-info" onclick="reloads()">确定</button>
+                    <button class="btn btn-info" onclick="printreport()">打印报告</button>
+                      {# End建议#}
+                    </div>
+                    {#测评报告结束#}
+                  </div>
+                </div>
+              </div>
+              {#滑动区域 end#}
+              {#End测评报告列表#}
+            </div>
+          {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endblock %}
+    {% block script %}
+      <script>
+        var score_90= [],
+            score_70= [],
+            total_70={},
+            datas = [],
+            serias= [],
+            ishasreport= true;
+        {% if ishasreport == False %}
+            ishasreport= false;
+        {% endif %}
+        if(ishasreport){
+            {% for question in datas %}
+                serias.push({{ question.scoreT|floatformat:"2" }})
+                {% if question.scoreT >= 90 %}
+                    {% if question.ability == '1' %}
+                        score_90.push('注意力')
+                    {% endif %}
+                    {% if question.ability == '2' %}
+                        score_90.push('记忆力')
+                    {% endif %}
+                    {% if question.ability == '3' %}
+                        score_90.push('执行功能')
+                    {% endif %}
+                    {% if question.ability == '4' %}
+                        score_90.push('言语功能')
+                    {% endif %}
+                    {% if question.ability == '5' %}
+                        score_90.push('创造力')
+                    {% endif %}
+                    {% if question.ability == '6' %}
+                        score_90.push('情绪情感')
+                    {% endif %}
+                    {% if question.ability == '7' %}
+                       score_90.push('社会认知')
+                    {% endif %}
+                    {% if question.ability == '8' %}
+                        score_90.push('信息加工速度')
+                    {% endif %}
+                    {% if question.ability == '9' %}
+                        score_90.push('逻辑推理')
+                    {% endif %}
+                {% endif %}
+                {% if question.scoreT <= 70 %}
+                    {% if question.ability == '1' %}
+                        total_70['注意力']={{ question.scoreT| floatformat:"2"}}
+                        score_70.push('注意力')
+                    {% endif %}
+                    {% if question.ability == '2' %}
+                        total_70['记忆力']={{ question.scoreT| floatformat:"2"}}
+                        score_70.push('记忆力')
+                    {% endif %}
+                    {% if question.ability == '3' %}
+                        total_70['执行功能']={{ question.scoreT| floatformat:"2"}}
+                        score_70.push('执行功能')
+                    {% endif %}
+                    {% if question.ability == '4' %}
+                        total_70['言语功能']={{ question.scoreT| floatformat:"2"}}
+                        score_70.push('言语功能')
+                    {% endif %}
+                    {% if question.ability == '5' %}
+                        total_70['创造力']={{ question.scoreT| floatformat:"2"}}
+                        score_70.push('创造力')
+                    {% endif %}
+                    {% if question.ability == '6' %}
+                        total_70['情绪情感']={{ question.scoreT| floatformat:"2"}}
+                        score_70.push('情绪情感')
+                    {% endif %}
+                    {% if question.ability == '7' %}
+                        total_70['社会认知']={{ question.scoreT| floatformat:"2"}}
+                       score_70.push('社会认知')
+                    {% endif %}
+                    {% if question.ability == '8' %}
+                        total_70['信息加工速度']={{ question.scoreT| floatformat:"2"}}
+                        score_70.push('信息加工速度')
+                    {% endif %}
+                    {% if question.ability == '9' %}
+                        total_70['逻辑推理']={{ question.scoreT| floatformat:"2"}}
+                        score_70.push('逻辑推理')
+                    {% endif %}
+                {% endif %}
+                {% if question.ability == '1' %}
+                    datas.push("注意力")
+                {% endif %}
+                {% if question.ability == '2' %}
+                    datas.push("记忆力")
+                {% endif %}
+                {% if question.ability == '3' %}
+                    datas.push("执行功能")
+                {% endif %}
+                {% if question.ability == '4' %}
+                    datas.push("言语功能")
+                {% endif %}
+                {% if question.ability == '5' %}
+                    datas.push("创造力")
+                {% endif %}
+                {% if question.ability == '6' %}
+                    datas.push("情绪情感")
+                {% endif %}
+                {% if question.ability == '7' %}
+                   datas.push("社会认知")
+                {% endif %}
+                {% if question.ability == '8' %}
+                    datas.push("信息加工速度")
+                {% endif %}
+                {% if question.ability == '9' %}
+                    datas.push("逻辑推理")
+                {% endif %}
+            {% endfor %}
+            seajs.use(['/static/js/app/teacher/report', '/static/js/app/teacher/analysis'], function(report, analysis){
+                report.init({
+                    echarts :  [{
+                        container: '.m-echarts-1',
+                        sels: '.m-echarts',  //没个图表的选择器
+                        echartData: {
+                            datas: datas,
+                            serias: serias
+                        }
+                    }],
+                    parent: '.m-evalution',
+                    people: '.u-gly-user',
+                    pos: {% if ishasreport == False %}0{% else %}{{ pos }}{% endif %},
+                    evalution: '.u-text-evalution'
+                });
+                {#重点脑适能单项分析#}
+                analysis.init({
+                    score_90: score_90,
+                    score_70: score_70,
+                    total_70: total_70
+                })
+            });
+        }
+      </script>
+      <script>
+        $(function () { $('.popover-show').popover({html:true}).popover('show');});
+        function  reportDetail(uid,reportid){
+            location.href="/teacher/reportdetail/?uid="+uid+"&rid="+reportid;
+        }
+        function printreport() {
+{#            var docc = document.getElementById('report').innerHTML;#}
+{#            window.document.body.innerHTML = docc;#}
+            window.print();
+        }
+        function reloads() {
+            location.href="/teacher/scalelist/?uid=";
+        }
+    </script>
+    {% endblock %}

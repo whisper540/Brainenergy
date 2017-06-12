@@ -1,0 +1,55 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+		<meta charset="utf-8">
+		<link href="/static/tools/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/css/login/login.css" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<div class="container">
+        <form class="form-active">
+            {% csrf_token %}
+            <h2 class="form-signin-heading">首次登录激活{{ request.user.id }}</h2>
+            <p class="u-tip" style="color: red; text-align: center"></p>
+            <div class="form-group row">
+                <input class="form-control u-in tel" type="text" name="mobile" placeholder="手机号" required autofocus id="mobile" required data-tip="请输入正确的手机号"/>
+            </div>
+            <div class="form-group input-group">
+{#                <p class="u-tip" style="color: red; text-align: center">请输入正确的激活码</p>#}
+                <div class="row">
+                    <div class="col-xs-7" style="padding: 0"><input class="form-control u-in code" type="text" name="code" placeholder="验证码" required id="code" data-tip="请输入正确的验证码"/></div>
+                    <div class="col-xs-5" style="padding-right: 0"><button class="btn btn-default u-getCode" type="button">获取激活码!</button></div>
+                </div>
+            </div>
+            <div class="form-group row">
+{#                <p class="u-tip" style="color: red; text-align: center">请输入密码</p>#}
+                <input id="password" class="form-control u-in" type="password" name="password" placeholder="修改密码" required data-tip="请输入密码"/>
+            </div>
+            <input id="uid" value="{{ request.user.id }}" type="hidden">
+            <input class="btn btn-lg btn-primary btn-block u-active row" type="submit"  id="active"></input>
+        </form>
+	</div>
+{#    {% block script %}#}
+    <script src="/static/js/framework/seajs/source/2.3.0/sea.js"></script>
+    <script src="/static/js/config/seajs/seajs.js"></script>
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/tools/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+    console.log(1111)
+        seajs.use([ '/static/js/app/teacher/m_active'], function(active){
+            active.init({
+                uid: '#uid',
+                mobile: '#mobile',
+                code: '#code',
+                password : '#password',
+                getCode: '.u-getCode',
+                active: '.u-active',
+                form: '.form-active'
+            });
+        });
+    </script>
+{#    {% endblock %}#}
+</body>
+</html>

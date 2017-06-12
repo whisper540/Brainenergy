@@ -1,0 +1,157 @@
+{% extends "basic/header.html" %}
+{% block body %}
+      <div class="row">
+        <div class="col-sm-2 col-md-2 sidebar" id="teacleftsidebar">
+            <ul class="nav nav-sidebar">
+                <li >
+                    <a href="#">
+                        <img src="/static/images/logo.ico" alt="">
+                    </a>
+                </li>
+            </ul>
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">老师档案</a></li>
+          </ul>
+          <!--<ul class="nav nav-sidebar">-->
+            <!--<li><a href="">现场测评</a></li>-->
+            <!--<li><a href="">...</a></li>-->
+          <!--</ul>-->
+          <!--<ul class="nav nav-sidebar">-->
+            <!--<li><a href="">训练内容</a></li>-->
+            <!--<li><a href="">...</a></li>-->
+          <!--</ul>-->
+        </div>
+
+        <div class="col-sm-10 col-md-10 main">
+          <h1 class="page-header">吴东老师，你好！</h1>
+
+          <div class="row placeholders">
+            <div class="col-xs-4 col-sm-4 placeholder">
+
+                <div class="btn-group">
+                    <span class="btn-group-btn">
+                        <a class="btn" type="button" style="color:#fff;width:50px;height:50px;line-height: 40px;border-radius:50px;text-align: center;background-color:dodgerblue;">东东</a>
+                        <a href="">吴东，男，23岁</a>
+                    </span>
+                </div>
+            </div>
+            <div class="col-xs-8 col-sm-8 placeholder">
+
+                <div class="btn-group">
+                    <span class="btn-group-btn">
+                        <button class="btn btn-success" type="button">现场测评</button>
+                    </span>
+                </div>
+            </div>
+          </div>
+
+          <div class="row">
+              <div class="col-xs-2 col-sm-2 placeholder">
+                  <ul class="nav nav-sidebar">
+{#                    <li><a href="/teacher/student/">基本信息</a></li>#}
+{#                    <li><a href="/teacher/save/">测评报告</a></li>#}
+                    <li class="active"><a href="/teacher/collect/">信息采集</a></li>
+                  </ul>
+              </div>
+              <div class="col-xs-10 col-sm-10 placeholder">
+                  <p>姓名：</p>吴东东
+                  <p>性别：</p>男
+                  <p>年龄：</p>24
+                  <p>年级：</p>高二
+                  <br>
+
+                  <div class="btn-group">
+                    <span class="btn-group-btn">
+                        <button class="btn btn-default" type="button" data-toggle="modal"
+   data-target="#myModal">信息有误点击修改</button>
+                    </span>
+                </div>
+              </div>
+{#              弹出窗#}
+              <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                   aria-labelledby="myModalLabel" aria-hidden="true">
+                   <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                         <div class="modal-header">
+                            <button type="button" class="close"
+                               data-dismiss="modal" aria-hidden="true">
+                                  &times;
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                               修改信息
+                            </h4>
+                         </div>
+                         <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-3">
+                                <div class="input-group topset">
+                                <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">姓名：</button>
+                                </span>
+                                <input type="text" class="form-control"><br>
+                                </div>
+
+                                <div class="input-group topset">
+                                <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">手机：</button>
+                                </span>
+                                <input type="text" class="form-control"><br>
+                                </div>
+
+                                <div class="input-group topset">
+                                <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">出生日期：</button>
+                                </span>
+                                <input type="date" class="form-control"><br>
+                                </div>
+
+                                <div class="btn-group topset">
+                                <button type="button" class="btn btn-default">男</button>
+                                <button type="button" class="btn btn-default">女</button>
+                                <button type="button" class="btn btn-default">其他</button>
+                                </div>
+
+                                <div class="input-group topset">
+                                    <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">年级：</button>
+                                    </span>
+                                    <select class="form-control">
+                                        <option value="1">1</option>
+                                        <option value="2">1</option>
+                                        <option value="3">1</option>
+                                    </select>
+                                </div>
+
+
+                                    <div class="form-group">
+                                        <label class="control-label">个人简介：</label>
+                                        <textarea class="form-control" rows="3" placeholder="文本框"></textarea>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+
+
+                         </div>
+                         <div class="modal-footer">
+                            <button type="button" class="btn btn-default"
+                               data-dismiss="modal">取消
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="gotoExam()">
+                               保存
+                            </button>
+                         </div>
+                      </div>
+                </div>
+                </div>
+{#              End弹出窗#}
+          </div>
+        </div>
+
+        </div>
+
+
+{% endblock %}

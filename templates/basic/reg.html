@@ -1,0 +1,32 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+		<meta charset="utf-8">
+		<link href="/static/tools/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/css/login/login.css" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<div class="container">
+			<form class="form-signin" action="{% url 'reg' %}" method="post">
+                {% csrf_token %}
+                <h2 class="form-signin-heading">用户注册</h2>
+				    <div class="form-group">
+					    {{ reg_form.username }}
+                    </div>
+					<div class="form-group">
+						{{ reg_form.email }}
+					</div>
+					<div class="form-group">
+						{{ reg_form.url }}
+					</div>
+					<div class="form-group">
+                        {{ reg_form.password }}
+					</div>
+                    <input type="hidden" name="source_url" value="{{ request.META.HTTP_REFERER }}">
+					<input class="btn btn-lg btn-primary btn-block" type="submit" id="login" value="注册">
+			</form>
+	</div>
+</body>
+</html>

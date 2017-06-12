@@ -1,0 +1,222 @@
+{% extends "basic/header.html" %}
+{% block css %}
+<link href="/static/css/student/student.css" rel="stylesheet">
+{% endblock %}
+{% block body %}
+      <div class="row m-row">
+        <div class="col-sm-2 col-md-2 sidebar" id="teacleftsidebar">
+          <ul class="nav nav-sidebar m-lsts-navlt">
+            <li class="m-lst-navlt">
+              <a href="javascript:void(0)">
+                <img src="../..{{ request.user.avatar }}" alt="" class="u-headimg-left">
+                <p class="u-name-navlt u-user-name">{{ request.user.realname }}</p>
+              </a>
+            </li>
+          </ul>
+          <ul class="nav nav-sidebar m-navsidber-l">
+            <li class="active"><a href="/teacher/home/">学生档案</a></li>
+            <li><a href="/teacher/scalelist/?uid={{ uid }}">现场测评</a></li>
+            <li><a href="javascript:void(0)">训练内容</a></li>
+            <li><a href="javascript:void(0)">...</a></li>
+          </ul>
+          {#version start#}
+          <div class="m-version-wrap">
+              <p class="u-version-num">Version  1.0.0</p>
+              <p class="m-version-66nao">2016 <span class="u-icon-ver"></span>六六脑</p>
+          </div>
+          {#version end#}
+        </div>
+        <div class="col-sm-10 col-md-10 main m-main-nonav">
+          <div class="row">
+              <div class="col-xs-12 col-sm-12 placeholder">
+                <div class="m-wrap-basicinfo row">
+                  <div class="m-basicinfo-l">
+                    <dl class="m-group-basicinfo">
+                      <dt class="u-title-basicinfo">头像</dt>
+                      <dd class="u-cont-basicinfo">
+                        <img src="../..{{ teacherdetail.avatar }}" class="u-head-img"/>
+                      </dd>
+                    </dl>
+{#                    <dl class="m-group-basicinfo">#}
+{#                      <dt class="u-title-basicinfo">修改头像：</dt>#}
+{#                      <dd class="u-cont-basicinfo">#}
+{#                          <p class="u-upload-picker">选择文件</p>#}
+{#                          <form enctype="multipart/form-data" method="post" action="/teacher/upload/" id="testform" target="ifm">#}
+{#                              <input type="hidden" name="userid" value="{{ teacherdetail.id }}">#}
+{#                            <input type="file" name="imgFile" id="imgFile" accept="image/png,image/gif,image/jpg,image/gif,image/bmp">#}
+{#                          </form>#}
+{#                          <button class="u-upload btn btn-default">开始上传</button>#}
+{#                          <iframe id='ifm' name='ifm' style="display:none" src="" class="m-pic-callback"></iframe>#}
+{#                      </dd>#}
+                    </dl>
+                    <dl class="m-group-basicinfo">
+                      <dt class="u-title-basicinfo">用户名/账号</dt>
+                      <dd class="u-cont-basicinfo">{{ teacherdetail.username }}</dd>
+                    </dl>
+                    <dl class="m-group-basicinfo">
+                      <dt class="u-title-basicinfo">老师姓名</dt>
+                      <dd class="u-cont-basicinfo">{{ teacherdetail.realname }}</dd>
+                    </dl>
+{#                    <dl class="m-group-basicinfo">#}
+{#                      <dt class="u-title-basicinfo">老师姓名</dt>#}
+{#                      <dd class="u-cont-basicinfo">{{ teacherdetail.username }}</dd>#}
+{#                    </dl>#}
+                    <dl class="m-group-basicinfo">
+                      <dt class="u-title-basicinfo">年龄</dt>
+                      <dd class="u-cont-basicinfo">{{ teacherdetail.age }}</dd>
+                    </dl>
+                    <dl class="m-group-basicinfo">
+                      <dt class="u-title-basicinfo">性别</dt>
+                      <dd class="u-cont-basicinfo">
+                        {% if teacherdetail.sex == 1 %}
+                        女
+                        {% elif teacherdetail.sex == 2 %}
+                            男
+                        {% else %}
+                            其他
+                        {% endif %}
+                      </dd>
+                    </dl>
+                    <dl class="m-group-basicinfo">
+                      <dt class="u-title-basicinfo">教育程度</dt>
+                      <dd class="u-cont-basicinfo">
+                        {% if teacherdetail.grade == 20 %}
+                            文盲
+                        {% elif teacherdetail.grade == 21 %}
+                            小学
+                        {% elif teacherdetail.grade == 22 %}
+                            初中
+                        {% elif teacherdetail.grade == 23 %}
+                            高中
+                        {% elif teacherdetail.grade == 24 %}
+                            专科
+                        {% elif teacherdetail.grade == 25 %}
+                            本科及以上
+                        {% endif %}
+                      </dd>
+                    </dl>
+                    <dl class="m-group-basicinfo">
+                      <dt class="u-title-basicinfo">手机号</dt>
+                      <dd class="u-cont-basicinfo">{{ teacherdetail.mobile }}</dd>
+                    </dl>
+{#                    <dl class="m-group-basicinfo">#}
+{#                      <dt class="u-title-basicinfo">初始密码</dt>#}
+{#                      <dd class="u-cont-basicinfo">123456</dd>#}
+{#                    </dl>#}
+                  </div>
+                </div>
+                <a href="" class="u-modify-info" data-toggle="modal" data-target=".modal-teacher">信息有误，修改信息</a>
+              </div>
+              {# 修改档案弹框 start #}
+              <div class="modal fade modal-teacher">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button class="close" data-dismiss="modal">×</button>
+                      <h4>修改个人信息</h4>
+                    </div><!--modal-header,弹出层头部区域-->
+                    <form class="form-horizontal form-new-stu" id="newtab">
+                      <div class="modal-body">
+{#                        <p class="u-tip"></p>#}
+
+
+                        <div class="form-group">
+                          <label for="user-name" class="col-sm-3 control-label">用户名/帐号<span class="star-red">*</span></label>
+                          <div class="col-sm-9">
+                            <input type="text" disabled class="form-control u-in username" id="user-name"  name="name"  value="{{ teacherdetail.username }}">
+                            <p class="u-tip-form"></p>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="user-real-name" class="col-sm-3 control-label">老师姓名<span class="star-red">*</span></label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control u-in realname" id="user-real-name"  name="realname" data-tip="请输入20以内个字符" value="{{ teacherdetail.realname }}">
+                            <p class="u-tip-form"></p>
+                          </div>
+                        </div>
+{#                        <div class="form-group">#}
+{#                          <label for="username" class="col-sm-2 control-label">老师姓名<span class="star-red">*</span></label>#}
+{#                          <div class="col-sm-10">#}
+{#                            <input type="text" class="form-control u-in username u-user-name" id="user-name" placeholder="姓名（请输入姓名）" name="name" data-tip="请输入20以内个字符" value="{{ teacherdetail.username }}">#}
+{#                          </div>#}
+{#                        </div>#}
+                        <div class="form-group">
+                          <label for="user-age" class="col-sm-3 control-label">年龄<span class="star-red">*</span></label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control u-in age" id="user-age" name="age"  data-tip="请输入1-100的数字" value="{{ teacherdetail.age }}">
+                            <p class="u-tip-form"></p>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-sm-3 control-label control-label">性别<span class="star-red">*</span></label>
+                          <div class="col-sm-9">
+                            <label for="user-gender-female" class="col-sm-3 control-label control-label-gender">
+                              <input type="radio" class="" id="user-gender-female" name="gender" value="2" {% if teacherdetail.sex == 2 %}checked{% endif %}>
+                              男</label>
+                            <label for="user-gender-male" class="col-sm-3 control-label control-label-gender">
+                              <input type="radio" class="" id="user-gender-male" name="gender" value="1" {% if teacherdetail.sex == 1 %}checked{% endif %}>
+                              女</label>
+                            <label for="user-gender-other" class="col-sm-3 control-label control-label-gender">
+                              <input type="radio" class="" id="user-gender-other" name="gender" value="9" {% if teacherdetail.sex == 9 %}checked{% endif %}>
+                              其他</label>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="user-edu" class="col-sm-3 control-label">教育程度<span class="star-red">*</span></label>
+                          <div class="col-sm-9">
+                            <select class="form-control" id="user-edu" name="education" >
+                              <option value="20" {% if teacherdetail.grade == 20 %}selected{% endif %}>文盲</option>
+                              <option value="21" {% if teacherdetail.grade == 21 %}selected{% endif %}>小学</option>
+                              <option value="22" {% if teacherdetail.grade == 22 %}selected{% endif %}>初中</option>
+                              <option value="23" {% if teacherdetail.grade == 23 %}selected{% endif %}>高中</option>
+                              <option value="24" {% if teacherdetail.grade == 24 %}selected{% endif %}>专科</option>
+                              <option value="25" {% if teacherdetail.grade == 25 %}selected{% endif %}>本科及以上</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="user-tel" class="col-sm-3 control-label">手机号<span class="star-red">*</span></label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control u-in tel" id="user-tel" name="telephone"  data-tip="请输入正确的手机号" value="{{ teacherdetail.mobile }}">
+                            <p class="u-tip-form"></p>
+                          </div>
+                        </div>
+{#                        <div class="form-group">#}
+{#                          <label for="user-pass" class="col-sm-2 control-label">初始密码<span class="star-red">*</span></label>#}
+{#                          <div class="col-sm-10">#}
+{#                            <input type="password" class="form-control u-in pass" id="user-pass" placeholder="修改密码（请输入需要修改的密码）" name="password"  data-tip="请输入新密码" value="123456">#}
+{#                          </div>#}
+{#                        </div>#}
+                        <div>
+                          <input type="hidden" value="1" name="hand"/>
+                          <input type="hidden" value="" name="birthday"/>
+                          <input type="hidden" value="" name="access_token"/>
+                          <input type="hidden" value="" name="path"/>
+                          <input type="hidden" value="{{ teacherdetail.id }}" name="id" id="user-id"/>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-default u-btn-cancel" data-dismiss="modal">取消</button>
+                        <input type="submit" value="保存" class="btn btn-primary btn-save"/>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            {# 修改档案弹框 end #}
+            </div>
+        </div>
+      </div>
+{% endblock %}
+{% block script %}
+    <script>
+        seajs.use(['/static/js/app/teacher/teacset',], function(teacset){
+            teacset.init({
+                access_token: 'input[name=access_token]',
+                callb: '.m-pic-callback',
+                form: '.form-new-stu',
+                flag: 'basic'
+            });
+        })
+    </script>
+{% endblock %}

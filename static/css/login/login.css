@@ -1,0 +1,43 @@
+html, body { height: 100%; }
+body { position: relative; background-color: #0A81E5; }
+.m-container-login { padding: 0; margin: 0 auto; }
+.m-container-login .form-signin, .form-active { background: #fff; margin: 0 auto; }
+.m-container-login .form-signin { position: absolute; top: 50%; left: 50%; margin-left: -200px; margin-top: -180px; padding: 40px 75px 50px; border-radius: 4px; width: 400px; height: 360px; }
+/*.form-active { padding: 15px 45px; max-width: 330px; border-radius: 15px; }*/
+/*.form-signin .form-signin-heading, .form-signin .checkbox { margin-bottom: 10px; }*/
+/*.form-signin .form-signin-heading { padding-bottom: 20px; text-align: center; }*/
+/*.form-signin .checkbox { font-weight: normal; }*/
+/*.form-signin .form-control { position: relative; height: auto; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; padding: 10px; font-size: 16px;   }*/
+/*.form-signin .form-control:focus { z-index: 2; }*/
+/*.form-group i{ position: absolute; top: 12px; left: 60px; font-size: 17px; color: #c8c8c8; transition : all 0.5s ease 0s;  }*/
+/*.form-signin input[type="email"] {*/
+  /*margin-bottom: -1px;*/
+  /*border-bottom-right-radius: 0;*/
+  /*border-bottom-left-radius: 0;*/
+/*}*/
+/*.form-signin input[type="password"] {*/
+  /*margin-bottom: 10px;*/
+  /*border-top-left-radius: 0;*/
+  /*border-top-right-radius: 0;*/
+/*}*/
+.m-tlt-login { padding: 10px 0 28px 23px; height: 100px; font-size: 14px; color: #555; }
+.u-tlt-login { margin: 0; text-align: left; }
+.m-wrap-tlt { position: relative; padding-left: 100px; height: 72px; }
+.m-wrap-tlt:before { content: ''; position: absolute; left: 0; top: -10px; width: 72px; height: 72px; background: url(/static/images/icon/logo_l.png) no-repeat; background-size: cover; }
+.u-tlt1-login { line-height: 30px; font-size: 22px; font-weight: 700;}
+.u-tlt2-login { line-height: 20px; font-size: 14px; }
+.u-in-login { text-align: center; }
+/*.form-signin .form-group{ position: relative; }*/
+/*.form-signin .form-group:after { content: 'X'; position: absolute; font-size: 12px; color: #ccc; top: 50%; right: 0; margin-top: -9px; }*/
+.m-search-user:hover, .m-search-user:focus, .m-search-user:active, .m-search-user:active:focus { background-color: #1BBE9F;  border: none; outline: none; box-shadow: none; }
+.u-in-login, .u-in-login:hover, .u-in-login:focus, .u-in-login:active, .u-in-login:active:focus {  background-color: #fff; outline: none; border: none; border-bottom: 1px solid #eee; -webkit-box-shadow: none; box-shadow: none; }
+.u-in-login:-webkit-autofill, .u-in-login:active:focus {  -webkit-box-shadow: 0 0 0px 1000px white inset; box-shadow: 0 0 0px 1000px white inset; }
+/*.u-btn-login { margin-top: 0; }*/
+.u-btn-login, .u-btn-login:hover, .u-btn-login:focus, .u-btn-login:active, .u-btn-login:active:focus {  background-color: #0a81e5; outline: none; border: none; border-bottom: 1px solid #eee; border-radius: 30px; -webkit-box-shadow: none; box-shadow: none; }
+.u-icon-login { padding-top: 30px; padding-left: 30px; height: 68px; }
+.u-icon-login h3 { padding-left: 48px; margin: 0; background: url(/static/images/icon/logo_s.png) no-repeat; height: 38px; line-height: 38px; font-size: 13px; color: #fff; }
+.m-mar-bot0 { margin-bottom: 0; }
+.u-tip-login { margin-bottom: 0; height: 40px; line-height: 40px; text-align: center; visibility: hidden; }
+.fn-unvisi { visibility: visible; }
+.fn-hide { display: none; }
+.f-text-red { color: red; }

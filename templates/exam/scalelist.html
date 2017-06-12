@@ -1,0 +1,261 @@
+{% extends "basic/header.html" %}
+{% block css %}
+    <style>
+        #page-head-span{
+            display:inline-block;
+            width:112px;
+            height:55px;
+            text-align:center;
+            font-size:22px;
+            line-height:55px;
+            color:#0A81E5;
+            margin-bottom:-10px;
+            border-bottom:2px solid #0A81E5;
+        }
+    .list-group-item{
+    }
+    .list-group-item-span{
+        background-color:#F5A623;
+        color:#fff;
+        border-radius:50px;
+        display:inline-block;
+        width:48px;
+        height:48px;
+        line-height:48px;
+        text-align:center;
+    }
+    .m-list-group {
+        max-height: 350px;
+        overflow-y: auto;
+    }
+    .u-btn-gotoExam{
+        background-color: #0A81E5;
+    }
+    .cbtn{
+        border-radius:20px;
+    }
+    </style>
+{% endblock %}
+{% block body %}
+      <div class="row m-row">
+        <div class="col-sm-2 col-md-2 sidebar" id="teacleftsidebar">
+            <ul class="nav nav-sidebar m-lsts-navlt">
+                <li class="m-lst-navlt">
+                    <a href="javascript:void(0)">
+                        <img src="../..{{ request.user.avatar }}" alt="" class="u-headimg-left">
+{#                        <p class="u-name-navlt u-user-name">{{ request.user.username }}</p>#}
+                        <p class="u-name-navlt">{{ request.user.realname }}</p>
+                    </a>
+                </li>
+            </ul>
+          <ul class="nav nav-sidebar m-navsidber-l">
+            <li><a href="/teacher/home/">学生档案</a></li>
+            <li class="active"><a href="/teacher/scalelist/?uid=">现场测评</a></li>
+            <li><a href="javascript:void(0)">训练内容</a></li>
+            <li><a href="javascript:void(0)">...</a></li>
+          </ul>
+          {#version start#}
+          <div class="m-version-wrap">
+            <p class="u-version-num">Version  1.0.0</p>
+            <p class="m-version-66nao">2016 <span class="u-icon-ver"></span>六六脑</p>
+          </div>
+          {#version end#}
+        </div>
+
+        <div class="col-sm-10 col-md-10 main m-main-nonav">
+          <h1 class="page-header"><span id="page-head-span">全部</span></h1>
+
+          <div class="row placeholders">
+              {% for scale in scalelists %}
+                <div class="col-xs-6 col-sm-3 placeholder scale-icon" onclick="selectSt({{ scale.id }},'{{ scale.name }}','{{ scale.explain }}')" data-toggle="modal"
+   data-target="#myModal">
+                  <img  width="200" height="200" class="img-responsive" alt="" style="background-color:
+                  {% ifchanged scale.id %}
+                          {% cycle "#658456" "#374D6C" "#C44646" %}
+                      {% else %}
+                            #fcf8e3
+                  {% endifchanged %}
+                  ;display:inline-block;width: 200px;height:200px;">
+                    <h4>{{ scale.explain }}</h4>
+{#                  <span class="text-muted">（{{ scale.explain }}）</span>#}
+                </div>
+              {% endfor %}
+          </div>
+
+          <div class="row">
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                   aria-labelledby="myModalLabel" aria-hidden="true">
+                   <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                         <div class="modal-header">
+                            <button type="button" class="close"
+                               data-dismiss="modal" aria-hidden="true">
+                                  &times;
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                               选择学生进行测评
+                            </h4>
+                         </div>
+                         <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="thumbnail" style="position:relative;">
+                                        <span class="glyphicon glyphicon-list-alt" style="position:absolute;top:110px;left:38%;font-size:9rem;color:#fff;"></span>
+                                      <img data-src="holder.js/100%x180" alt="" src="" data-holder-rendered="true" style="height: 300px; width: 100%; display: block;background-color:#1BBE9F;">
+                                      <div class="caption">
+                                        <h3 id="modaltitle">Thumbnail label</h3>
+                                        <p id="modalcontent">&nbsp;</p>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="input-group" style="margin-bottom:5px;position:relative;width:100%;">
+                                        <input type="text" class="form-control" id="keyword" placeholder="输入搜索内容" style="width:100%;">
+                                        <span class="input-group-btn" style="position:absolute;right:40px;top:5%;">
+                                            <button class="btn btn-default" type="button" onclick="searchPeople()" style="z-index:999;background-color:#0A81E5;display:block;width:34px;height:34px;border-radius:50px;">
+                                                <span class="glyphicon glyphicon-search" style="color:#fff;"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <input id="scaletype" type="hidden" value="">
+                                    <input id="userid" type="hidden" value="{{ uid }}">
+                                    <div class="list-group m-list-group" id="show_people">
+{#                                    <a href="javascript:void(0);" class="list-group-item active" onclick="selectUser(uid={{ uid }})">#}
+{#                                    李雷#}
+{#                                    </a>#}
+{#                                    <a href="javascript:void(0);" class="list-group-item">韩梅</a>#}
+                                        {% for student in stulists %}
+                                            <a href="javascript:void(0);" class="list-group-item" onclick="selectUser(uid={{ student.id }})">
+                                                <span class="list-group-item-span">{{ student.realname | slice:"-2:" }}</span>
+                                            {{ student.realname }}，
+                                            {% if student.sex == 1 %}
+                                                女
+                                              {% elif student.sex == 2 %}
+                                                男
+                                              {% else %}
+                                                其他
+                                              {% endif %}
+                                            ，{{ student.age }}岁
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                         </div>
+                         <div class="modal-footer">
+                            <button type="button" class="btn btn-default cbtn"
+                               data-dismiss="modal" onclick="clearsearch()">取消
+                            </button>
+                            <button type="button" class="btn btn-primary u-btn-gotoExam cbtn" disabled onclick="gotoExam()">
+                               开始测评
+                            </button>
+                         </div>
+                      </div>
+                </div>
+                </div>
+          </div>
+        </div>
+
+        </div>
+
+    <script>
+        function selectSt(type,title,content) {
+                $("#modaltitle").html(content);
+{#                $("#modalcontent").html(content);#}
+                $("#scaletype").val(type);
+            }
+
+        function selectUser(uid) {
+            if(uid){
+                $('.u-btn-gotoExam').removeAttr('disabled');
+            }
+            $("#userid").val(uid);
+        }
+{#        function searchPeople() {#}
+{#            $("#show_people").html('');//清空搜索框#}
+{#            var search= {#}
+{#          keyword: ''#}
+{#        };#}
+{#            search.keyword = $("#keyword").val();//搜索关键字#}
+{#            var access_token = '85a449ffb6bff401eaa43fa7ab16bed4f8ecfbf2';#}
+{#            $.ajax({#}
+{#                  type:'POST',#}
+{#                  url:'http://192.168.10.2:8080/api/Cases/getList',#}
+{#                  dataType:'json',#}
+{#                  data:{#}
+{#                      'access_token': access_token,#}
+{#                      search:search,#}
+{#                  },#}
+{#                  success:function(response, stutas, xhr){#}
+{#                      console.log(response.data);#}
+{#                      var str="";#}
+{#                      for(var i =0;i<response.data.length;i++){#}
+{#                          var cachedata = response.data[i];#}
+{#                          str += "<a href='javascript:void(0);' class='list-group-item' onclick='selectUser("+cachedata.id+")'>"+cachedata.name+"</a>";#}
+{#                      }#}
+{##}
+{#                      $("#show_people").append(str);#}
+{#                  }#}
+{#              });#}
+{#        }#}
+function searchPeople() {
+    var keyword = $("#keyword").val();
+    $("#show_people").html('');
+    $.ajax({
+                type:'POST',
+                url:'/teacher/search/',
+                dataType:'json',
+                data:{
+                  keyword:keyword
+                },
+                success:function (response) {
+                    console.log(response.length);
+                    if(response.length==0){
+                        str = "<a href='javascript:void(0);'>没有查询到信息！</a>"
+                    }else {
+                        var str = "",
+                        i= 0,
+                        len= response.length,
+                        sex="";
+                    for(;i < len; i++){
+                       var cachedata= response[i];
+                       switch(cachedata.sex){
+                           case 2:
+                               sex = "男";
+                               break;
+                           case 1:
+                               sex = "女";
+                               break;
+                           default:
+                               sex="其他";
+                               break;
+                       }
+                        var cachestr = cachedata.realname ? cachedata.realname.slice(-2) : "";
+                          str +="<a href='javascript:void(0);' class='list-group-item' onclick='selectUser(uid="+cachedata.id+")'>"+
+                              "<span class='list-group-item-span'>"+cachestr+"</span>"
+                              +cachedata.realname+", "+sex+","+cachedata.age+"岁</a>";
+                      }
+                    }
+                        $("#show_people").append(str);
+                 }
+            });
+}
+        function gotoExam() {
+            var type=$("#scaletype").val();
+            var uid=$("#userid").val();
+            window.location.href="/teacher/exam/?stype="+type+"&uid="+uid;
+        }
+        function clearsearch() {
+            location.reload();
+        }
+    </script>
+
+
+{% endblock %}
+{% block script %}
+        <script>
+        seajs.use(['/static/js/app/exam/deal'], function(deal){
+            deal.init();
+        })
+        </script>
+    {% endblock %}

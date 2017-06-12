@@ -1,0 +1,25 @@
+/*header-nav start*/
+@import "basic.css";
+@media print {
+ a{
+     display:none !important;
+ }
+    #print_head{
+        display:none !important;
+    }
+    #print_body{
+        width:100% !important;
+    }
+    *{
+
+        overflow-x: hidden;
+    }
+    body{
+        height:auto !important;
+        width:100% !important;
+    }
+    /*#print-position{*/
+        /*display:none !important;*/
+    /*}*/
+    .m-echarts-1 { width: 300px!important; }
+}

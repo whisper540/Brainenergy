@@ -1,0 +1,14 @@
+.m-wrap-basicinfo { padding-left: 15px; }
+.m-group-basicinfo { padding-bottom: 15px; margin-bottom: 0; }
+.u-title-basicinfo { padding-bottom: 5px; font-size: 12px; color: #999; font-weight: 400; }
+.u-cont-basicinfo { position: relative; font-size: 14px; font-weight: 700; color: #333; }
+.u-modify-info { padding: 15px 0 0 12px; display: inline-block; font-size: 14px; color: #999; text-decoration: underline; cursor: pointer; }
+.m-basicinfo-l, .m-basicinfo-r { padding: 0; }
+.u-upload-picker { padding: 6px 12px; display: block; position: relative; width: 88px; cursor: pointer; background: #00b7ee;color: #fff; text-align: center; border-radius: 3px; overflow: hidden; }
+#testform { position: absolute; top: 0px; left: 0px; width: 88px; height: 34px; overflow: hidden; bottom: auto; right: auto; }
+#imgFile { display: block; position: absolute; width: 88px; height: 34px; opacity: 0; }
+.u-upload { position: absolute; top: 0px; left: 100px; }
+.u-head-basicinfo { width: 50px; height: 50px; }
+.u-init-pass { padding-left: 20px; text-decoration: underline; cursor: pointer; color: #0a81e5 }
+/*.u-modify-info:link, .u-modify-info:visited, .u-modify-info:hover, .u-modify-info:active {  }*/
+a:focus { outline: 0px; }

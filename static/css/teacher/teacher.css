@@ -1,0 +1,167 @@
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+}
+
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+  border: 0;
+}
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+  display: none;
+}
+@media (min-width: 768px) {
+  .sidebar {
+    /*position: fixed;*/
+    /*top: 51px;*/
+    /*bottom: 0;*/
+    /*left: 0;*/
+    /*z-index: 1000;*/
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #f5f5f5;
+    /*border-right: 1px solid #eee;*/
+  }
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+  color: #fff;
+  background-color: #428bca;
+}
+.nav-sidebar-single { margin-left: 0; }
+/*要去掉的*/
+/*
+ * Main content
+ */
+
+@media (min-width: 768px) {
+
+}
+.main .page-header {
+  margin-top: 0;
+  padding-left: 40px;
+}
+
+
+/*
+ * Placeholder dashboard ideas
+ */
+
+.placeholders {
+  margin-bottom: 30px;
+  text-align: center;
+}
+.placeholders h4 {
+  margin-bottom: 0;
+}
+.placeholder {
+  margin-bottom: 20px;
+}
+.placeholder img {
+  display: inline-block;
+  border-radius: 1%;
+}
+.modal-teacher .modal-header h4{
+  margin: 0;
+  text-align: center;
+}
+.modal-teacher .modal-dialog{
+  -webkit-transform: translate(0,20%);
+  -ms-transform: translate(0,20%);
+  -o-transform: translate(0,20%);
+  transform: translate(0,20%);
+}
+.modal-teacher .modal-body {
+  padding: 20px 0 5px;
+}
+.form-horizontal .control-label-gender {
+  text-align: center;
+}
+.modal-mpass .modal-header {
+  border-bottom: none;
+}
+.modal-mpass .modal-footer {
+  border-top: none;
+}
+/*@media (min-width: 768px){*/
+  .modal-teacher .modal-content{
+    padding: 0 15px;
+    margin: 0 auto;
+  }
+  .modal-mpass .modal-content{
+    margin: 0 150px;
+  }
+  .modal-mpass.in .modal-dialog {
+    /*position: absolute;*/
+    /*top: 30%;*/
+    /*left: 50%;*/
+    /*transform: translate(-50%, -50%);*/
+  }
+  .modal-mpass .modal-content{
+    margin: 0 150px;
+  }
+  .control-label {
+    padding-right: 0;
+  }
+/*}*/
+.star-red {
+    padding-left: 3px;
+    color: red;
+}
+div#teacleftsidebar ul li{
+  text-align:center;
+}
+.u-head-img { width: 80px; height: 80px; margin-bottom: 10px; border-radius: 50%; }
+.f-text-right{
+  text-align: right;
+}
+/*form*/
+.u-tip {
+  text-align: center;
+  color: #D31717;
+  font-size: .6rem;
+  margin-bottom: .75rem;
+}
+.form-m-pass .u-tip { margin: 5px 0 0; }
+.form-m-pass .form-group { margin-bottom: 5px; }
+.s-red-border {
+  border: 1px solid #D31717;
+}
+.form-m-pass { margin: 0 auto; max-width: 320px; }

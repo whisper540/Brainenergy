@@ -1,0 +1,405 @@
+{% extends "basic/header.html" %}
+{% block css %}
+    <style>
+    #headicon{
+        background-color:#658456;
+        width:48px;
+        height:48px;
+        display:inline-block;
+        text-align:center;
+        line-height:48px;
+        color:#fff;
+        border-radius:50px;
+        font-size:15px;
+        margin-right:30px;
+    }
+    .ability{
+        background-color:#EEE;
+        display:inline-block;
+        width:120px;
+        height:20px;
+        border-radius:10px;
+        font-size:10px;
+        text-align:center;
+        line-height:20px;
+{#        margin-right:40px;#}
+    }
+    .u-ability { padding-right: 0; }
+    .scoreinput{
+        border:none;
+        outline:none;
+        border-bottom:1px solid #ccc;
+        width:60px;
+    }
+    .scoreinput::-moz-placeholder { color: #ccc!important; }
+    .scoreinput::-webkit-input-placeholder { color: #ccc!important; }
+    .scoreinput:-ms-input-placeholder { color: #ccc!important; }
+    .scorelabel { padding: 0; font-style: normal; font-weight:normal;}
+{#    @media screen and (min-width: 1200px){#}
+{#            .scorelabel{#}
+{#            float:right;#}
+{#            margin-right:400px;#}
+{#            font-style: normal;#}
+{#            font-weight:normal;#}
+{#        }#}
+{#    }#}
+{#    @media screen and (max-width: 1200px){#}
+{#            .scorelabel{#}
+{#            float:right;#}
+{#            margin-right:200px;#}
+{#            font-style: normal;#}
+{#            font-weight:normal;#}
+{#        }#}
+{#    }#}
+{#    @media screen and (max-width: 1000px){#}
+{#            .scorelabel{#}
+{#            float:right;#}
+{#            margin-right:0px;#}
+{#            font-style: normal;#}
+{#            font-weight:normal;#}
+{#        }#}
+{#    }#}
+    .list-group{
+        margin-bottom:50px;
+    }
+    .m-btn-report {
+        text-align: left;
+    }
+    #sbBtn{
+        width:120px;
+        height:40px;
+        border-radius:30px;
+        background-color:#0A81E5;
+    }
+    </style>
+{% endblock %}
+        {% block body %}
+
+      <div class="row m-row">
+        <div class="col-sm-2 col-md-2 sidebar" id="teacleftsidebar">
+            <ul class="nav nav-sidebar m-lsts-navlt">
+                <li class="m-lst-navlt">
+                    <a href="javascript:void(0)">
+                        <img src="../..{{ request.user.avatar }}" alt=""  class="u-headimg-left">
+{#                        <p class="u-name-navlt u-user-name">{{ request.user.username }}</p>#}
+                        <p class="u-name-navlt">{{ request.user.realname }}</p>
+                    </a>
+                </li>
+            </ul>
+          <ul class="nav nav-sidebar m-navsidber-l">
+            <li><a href="/teacher/home/">学生档案</a></li>
+            <li class="active"><a href="/teacher/scalelist/?uid={{ uid }}">现场测评</a></li>
+            <li><a href="javascript:void(0)">训练内容</a></li>
+            <li><a href="javascript:void(0)">...</a></li>
+          </ul>
+          {#version start#}
+          <div class="m-version-wrap">
+            <p class="u-version-num">Version  1.0.0</p>
+            <p class="m-version-66nao">2016 <span class="u-icon-ver"></span>六六脑</p>
+          </div>
+          {#version end#}
+        </div>
+
+        <div class="col-sm-10 col-md-10 main m-main-nonav m-main-tab">
+{#          <h1 class="page-header">张三同学，你好！</h1>#}
+{##}
+{#          <div class="row placeholders">#}
+{#            <div class="col-xs-4 col-sm-4 placeholder">#}
+{##}
+{#                <div class="btn-group">#}
+{#                    <span class="btn-group-btn">#}
+{#                        <a class="btn" type="button" style="color:#fff;width:50px;height:50px;line-height: 40px;border-radius:50px;text-align: center;background-color:dodgerblue;">东东</a>#}
+{#                        <a href="">吴东东，男，23岁</a>#}
+{#                    </span>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-xs-8 col-sm-8 placeholder">#}
+{##}
+{#                <div class="btn-group">#}
+{#                    <span class="btn-group-btn">#}
+{#                        <button class="btn btn-success" type="button">现场测评</button>#}
+{#                    </span>#}
+{#                </div>#}
+{#            </div>#}
+{#          </div>#}
+            <h3 class="page-header"><a href="javascript:void(0);" id="headicon"><span class="glyphicon glyphicon-lock"></span></a>{{ sdatas.explain }}</h3>
+            <div class="row m-padl-40">
+              <form id="brainForm">
+                  {% for data in datas %}
+                      {#单选题#}
+                        {% if data.type == 1 %}
+                            <div class="list-group">
+                                <div class="panel panel-info">
+                                 <div class="panel-heading">
+                                   <h4 class="panel-title">
+                                     <a data-toggle="collapse" data-parent="#accordion"
+                                        href="#collapse{{ data.id }}">
+                                       操作说明
+                                     </a>
+                                   </h4>
+                                 </div>
+                                 <div id="collapse{{ data.id }}" class="panel-collapse collapse">
+                                   <div class="panel-body">
+                                     {{ data.act_explain }}.
+                                   </div>
+                                 </div>
+                               </div>
+                            <h4 class="list-group-item-heading" id="list-group-item-heading">{{ data.id }},{{ data.title }}</h4>
+                            {% for answer in data.answer %}
+                                <div class="checkbox">
+                                <label>
+                                <p><input type="checkbox" name="ans[{{ answer.id }}]" id="ans{{ answer.id }}" class="question{{ data.id }}" value="{{ answer.ans_score }}" onclick="uncheck({{ data.id }},{{ answer.id }})">{{ answer.content }}({{ answer.ans_score }}分)</p>
+                                </label>
+                                </div>
+                            {% endfor %}
+                             <div class="panel panel-success">
+                                 <div class="panel-heading">
+                                   <h4 class="panel-title">
+                                     <a data-toggle="collapse" data-parent="#accordion"
+                                        href="#collapse{{ data.id }}2">
+                                       查看答案
+                                     </a>
+                                   </h4>
+                                 </div>
+                                 <div id="collapse{{ data.id }}2" class="panel-collapse collapse">
+                                   <div class="panel-body">
+                                     {{ data.right_answer }}.
+                                   </div>
+                                 </div>
+                               </div>
+                            </div>
+                        {% endif %}
+                        {#单选题End#}
+
+                        {#多选题#}
+                        {% if data.type == 2 %}
+
+                            <div class="list-group">
+                            <div class="panel panel-info">
+                                 <div class="panel-heading">
+                                   <h4 class="panel-title">
+                                     <a data-toggle="collapse" data-parent="#accordion"
+                                        href="#collapse{{ data.id }}">
+                                       操作说明
+                                     </a>
+                                   </h4>
+                                 </div>
+                                 <div id="collapse{{ data.id }}" class="panel-collapse collapse">
+                                   <div class="panel-body">
+                                     {{ data.act_explain }}.
+                                   </div>
+                                 </div>
+                               </div>
+                            <h4 class="list-group-item-heading" id="list-group-item-heading">{{ data.id }},{{ data.title }}</h4>
+                            {% for answer in data.answer %}
+                                <div class="checkbox">
+                                    <label>
+                                    <p><input name="ans[{{ answer.id }}]" type="checkbox" id="checkboxSuccess" value="{{ answer.ans_score }}">{{ answer.content }}({{ answer.ans_score }}分)</p>
+                                    </label>
+                                </div>
+                            {% endfor %}
+                            <div class="panel panel-success">
+                                 <div class="panel-heading">
+                                   <h4 class="panel-title">
+                                     <a data-toggle="collapse" data-parent="#accordion"
+                                        href="#collapse{{ data.id }}2">
+                                       查看答案
+                                     </a>
+                                   </h4>
+                                 </div>
+                                 <div id="collapse{{ data.id }}2" class="panel-collapse collapse">
+                                   <div class="panel-body">
+                                     {{ data.right_answer }}.
+                                   </div>
+                                 </div>
+                               </div>
+                            </div>
+                        {% endif %}
+                        {#多选题End#}
+
+                        {#填空题#}
+                        {% if data.type == 3 %}
+                            <div class="list-group row">
+{#                            <div class="panel panel-info">#}
+{#                                 <div class="panel-heading">#}
+{#                                   <h4 class="panel-title">#}
+{#                                     <a data-toggle="collapse" data-parent="#accordion"#}
+{#                                        href="#collapse{{ data.id }}">#}
+{#                                       操作说明#}
+{#                                     </a>#}
+{#                                   </h4>#}
+{#                                 </div>#}
+{#                                 <div id="collapse{{ data.id }}" class="panel-collapse collapse">#}
+{#                                   <div class="panel-body">#}
+{#                                     {{ data.act_explain }}.#}
+{#                                   </div>#}
+{#                                 </div>#}
+{#                               </div>#}
+                            <div class="list-group-item-heading row" id="list-group-item-heading">
+                                <div class="ability col-sm-3 col-md-3 col-lg-3">
+                                    {% if data.ability_id == 1 %}
+                                        注意力
+                                    {% endif %}
+                                    {% if data.ability_id == 2 %}
+                                        记忆力
+                                    {% endif %}
+                                    {% if data.ability_id == 3 %}
+                                        执行功能
+                                    {% endif %}
+                                    {% if data.ability_id == 4 %}
+                                        言语功能
+                                    {% endif %}
+                                    {% if data.ability_id == 5 %}
+                                        创造力
+                                    {% endif %}
+                                    {% if data.ability_id == 6 %}
+                                        情绪情感
+                                    {% endif %}
+                                    {% if data.ability_id == 7 %}
+                                       社会认知
+                                    {% endif %}
+                                    {% if data.ability_id == 8 %}
+                                        信息加工速度
+                                    {% endif %}
+                                    {% if data.ability_id == 9 %}
+                                        逻辑推理
+                                    {% endif %}
+                                </div>
+                                <div class="col-sm-7 col-md-6 col-lg-5 u-ability">{{ data.title }}</div>
+{#                                if(value.length>3)value=value.slice(0,3);#}
+                                <label for="" class="scorelabel col-sm-2 col-md-3 col-lg-4">
+                                    得分:
+                                    <input type="number" placeholder="{{ data.min_score }}-{{ data.range_score }}" name="{{ data.id }}" id="" class="question{{ data.id }} scoreinput" value="" min="{{ data.min_score }}" max="{{ data.range_score }}" oninput="var min={{ data.min_score }}; value=parseInt(value);if(value>{{ data.range_score }})value={{ data.range_score }};if(value.length>=String(min).length&&value<min)value=min">
+                                </label>
+{#                                （{{ data.min_score }}-{{ data.range_score }}分)#}
+                                <input id="qid{{ data.id }}" type="hidden" value="{{ data.ability_id }}">
+                                <input id="sid{{ data.id }}" type="hidden" value="{{ data.scales_id }}">
+                                <input id="m{{ data.id }}" type="hidden" value="{{ data.m }}">
+                                <input id="sd{{ data.id }}" type="hidden" value="{{ data.sd }}">
+                            </div>
+{#                            <div class="panel panel-success">#}
+{#                                 <div class="panel-heading">#}
+{#                                   <h4 class="panel-title">#}
+{#                                     <a data-toggle="collapse" data-parent="#accordion"#}
+{#                                        href="#collapse{{ data.id }}2">#}
+{#                                       查看答案#}
+{#                                     </a>#}
+{#                                   </h4>#}
+{#                                 </div>#}
+{#                                 <div id="collapse{{ data.id }}2" class="panel-collapse collapse">#}
+{#                                   <div class="panel-body">#}
+{#                                     {{ data.right_answer }}.#}
+{#                                   </div>#}
+{#                                 </div>#}
+{#                               </div>#}
+                            </div>
+                        {% endif %}
+                        {#填空题End#}
+                  {% endfor %}
+
+              </form>
+                {#{{ uid }}#}
+              <div class="m-btn-report disabled">
+                <button class="btn btn-info u-btn-report" id="sbBtn">提交</button>
+              </div>
+            </div>
+        </div>
+
+      </div>
+
+{% endblock %}
+
+
+{% block script %}
+  <script>
+  seajs.use(['/static/js/app/exam/exam', '/static/js/app/exam/deal'], function(exam, deal){
+      exam.init({
+          uid: {{ uid }},
+          stype:{{ stype }}
+      });
+      deal.init();
+  })
+{#      $(function() {#}
+{#          $('#sbBtn').on('click',function () {#}
+{#              var questions = $("#brainForm").serializeArray();#}
+{#              var qdatas = JSON.stringify(questions);#}
+{#              var qtest = JSON.parse(qdatas);#}
+{#              var comscore = 0;#}
+{#              var datas = {};#}
+{#              var datastotal = {};#}
+{#              var tag = 0;#}
+{#              //处理做题完毕后，数据格式#}
+{#              var totalscore = 0;#}
+{#              for(var q in qtest){#}
+{#                  datas[q]={}#}
+{#                  var abilityid = $("#qid"+qtest[q]['name']).val();#}
+{#                  var m = $("#m"+qtest[q]['name']).val();#}
+{#                  var sd = $("#sd"+qtest[q]['name']).val();#}
+{#                  datas[q]['qid']=qtest[q]['name'];#}
+{#                  datas[q]['scoreR']=qtest[q]['value'];//真实分数#}
+{#                  datas[q]['scoreX']=doX(datas[q]['scoreR'],m,sd);//X得分#}
+{#                  datas[q]['scoreT']=doT(datas[q]['scoreX']);//展示分数#}
+{#                  datas[q]['ability']=abilityid;#}
+{#                  datas[q]['m']=m;#}
+{#                  datas[q]['sd']=sd;#}
+{#                  //计算标准分的平均值，并计算出综合得分#}
+{#                  comscore += datas[q]['scoreX'];#}
+{#                  if(q == qtest.length-1){#}
+{#                      comscore = comscore/(qtest.length);#}
+{#                      comscore=doC(comscore);#}
+{#                  }#}
+{#                  //End计算标准分的平均值，并计算出综合得分#}
+{#              }#}
+{#              datastotal['history']=datas;#}
+{#              datastotal['com']=comscore;#}
+{#              datastotal = JSON.stringify(datastotal);#}
+{#              localStorage.setItem('qhistory',datastotal);#}
+{#              console.log(localStorage.getItem('qhistory'));#}
+{##}
+{#              //End处理做题完毕后，数据格式#}
+{#              $.ajax({#}
+{#                  type:'POST',#}
+{#                  url:'/teacher/save/',#}
+{#                  dataType:'json',#}
+{#                  data:{#}
+{#                      userid:'{{ uid }}',#}
+{#                      questions:datastotal#}
+{#                  },#}
+{#                  success:function(response, stutas, xhr){#}
+{#                      //跳转到测评页面#}
+{#                      console.log(response);#}
+{#                      if(response){#}
+{#                          $(location).prop('href', '/teacher/save/?uid={{ uid }}');#}
+{#                      }#}
+{##}
+{#                  },#}
+{#                  error: function(a, b, c){#}
+{#                      console.log(a, b, c)#}
+{#                  }#}
+{#              });#}
+{#          });#}
+{#          //进行X得分操作(标准分X)#}
+{#          function doX(scoreR,m,sd){#}
+{#              var scoreX=(scoreR-m)/sd;#}
+{#              return scoreX;#}
+{#          }//End进行X得分操作(标准分X)#}
+{##}
+{#          //计算展示在测评报告的分数#}
+{#          function doT(scoreX){#}
+{#              var scoreT=scoreX*0.9;#}
+{#              return scoreT;#}
+{#          }//End计算展示在测评报告的分数#}
+{##}
+{#          //计算综合得分#}
+{#          function doC(scoreAvg){#}
+{#              var scoreC=scoreAvg*0.9;#}
+{#              return scoreC;#}
+{#          }//End计算综合得分#}
+{#      });#}
+      //function uncheck(qid,ansid) {
+          //$(".question"+qid).prop("checked",false);
+          //$("#ans"+ansid).prop("checked",true);
+      //}
+
+  </script>
+{% endblock %}
