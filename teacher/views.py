@@ -493,9 +493,9 @@ def sendmsg(request,mobile,code):
     # 短信接口的URL
     SEND_URL = 'http://send.18sms.com/msg/HttpBatchSendSM'
     # 产品服务账号用户中心 - 账户管理 - 产品服务 找到对应的账号与密码
-    account = 'Mj1t9m5'
+    account = '*****'
     # 产品服务密码
-    pswd = '6Qv3If7Xm5'
+    pswd = '*****'
     # mobile='15295565440'
     mobile=mobile
     msg = "您好，您的注册验证码是：%s，请完成输入。如非本人操作，请忽略！【六六脑】" % (code)
