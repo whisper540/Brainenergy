@@ -4,7 +4,7 @@ Django==1.11.1
 html5lib==0.999
 mpmath==0.19
 olefile==0.44
-Pillow==4.1.1
+Pillow==9.3.0
 PyMySQL==0.7.11
 pytz==2017.2
 requests==2.4.3
